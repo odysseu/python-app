@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     # Create a Folium map centered at a specific location
-    my_map = folium.Map(location=[latitude=48.8566, longitude=2.3522], zoom_start=12)
+    my_map = folium.Map(location=[latitude:=48.8566, longitude:=2.3522], zoom_start=12)
 
     # Add an OpenStreetMap tile layer to the map
     folium.TileLayer('openstreetmap').add_to(my_map)
