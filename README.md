@@ -1,1 +1,2 @@
-# python-app
+# simple app at https://odysseu.github.io/python-app/
+

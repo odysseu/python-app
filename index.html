@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculette Projet Immobilier</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculette Projet Immobilier</h1>
+        <form id="calculette-form">
+            <label for="prix">Prix du bien (€):</label>
+            <input type="number" id="prix" name="prix" required>
+
+            <label for="apport">Apport personnel (€):</label>
+            <input type="number" id="apport" name="apport" required>
+
+            <label for="taux">Taux d'intérêt (%):</label>
+            <input type="number" step="0.01" id="taux" name="taux" required>
+
+            <label for="duree">Durée du prêt (années):</label>
+            <input type="number" id="duree" name="duree" required>
+
+            <button type="button" onclick="genererRapport()">Calculer</button>
+        </form>
+        <div id="resultat"></div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+</body>
+</html>
