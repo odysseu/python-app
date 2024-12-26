@@ -56,10 +56,10 @@ function genererRapport() {
     // Calculer l'année de remboursement
     const revenusMensuels = totalLoyers / 12;
     const depensesMensuelles = mensualite - loyerFictif;
-    const investissementInitial = totalAchat;
+    const coutOperation = coutTotalEmprunt;
 
     // Année où l'achat sera remboursé
-    const anneeRemboursement = Math.ceil(investissementInitial / (revenusMensuels - depensesMensuelles * 12));
+    const anneeRemboursement = Math.max(Math.ceil(coutOperation / ((revenusMensuels - depensesMensuelles) * 12)), 0);
 
     const resultat = `
         <h2>Résultat de la simulation</h2>
@@ -92,7 +92,7 @@ function genererRapport() {
     genererGraphique(mensualite, loyerFictif, duree, loyers, anneeRemboursement);
 }
 
-function genererGraphique(mensualite, loyerFictif, duree, loyers, dureeRemboursement) {
+function genererGraphique(mensualite, loyerFictif, duree, loyers, anneeRemboursement) {
     const ctx = document.getElementById('myChart').getContext('2d');
     const labels = [];
     const dataEmprunt = [];
@@ -102,7 +102,7 @@ function genererGraphique(mensualite, loyerFictif, duree, loyers, dureeRembourse
     let cumulLoyers = 0;
     let cumulInvestissement = 0;
 
-    for (let i = 0; i <= dureeRemboursement; i++) {
+    for (let i = 0; i <= anneeRemboursement; i++) {
         labels.push(`Année ${i}`);
         cumulEmprunt += mensualite * 12;
         cumulInvestissement += loyerFictif * 12;
@@ -147,7 +147,7 @@ function genererGraphique(mensualite, loyerFictif, duree, loyers, dureeRembourse
     });
 }
 
-function telechargerPDF(prix, fraisNotaire, fraisCommission, totalAchat, montantEmprunte, taux, mensualite, coutTotalInterets, coutTotalEmprunt, loyerFictif, dureeRemboursement, loyers) {
+function telechargerPDF(prix, fraisNotaire, fraisCommission, totalAchat, montantEmprunte, taux, mensualite, coutTotalInterets, coutTotalEmprunt, loyerFictif, anneeRemboursement, loyers) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     doc.text(20, 20, 'Rapport de Simulation du Projet Immobilier');
@@ -167,7 +167,7 @@ function telechargerPDF(prix, fraisNotaire, fraisCommission, totalAchat, montant
 
     doc.text(20, 140, 'Financement');
     doc.text(20, 150, `Loyer fictif mensuel : ${loyerFictif} €`);
-    doc.text(20, 160, `Remboursement après : ${dureeRemboursement} ans`);
+    doc.text(20, 160, `Remboursement après : ${anneeRemboursement} ans`);
 
     loyers.forEach((loyer, index) => {
         doc.text(20, 170 + index * 10, `Loyer ${index + 1} : ${loyer.loyer} €, Durée : ${(loyer.dureeLocation * 100).toFixed(2)} % de l'année`);
