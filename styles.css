@@ -1,12 +1,12 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #fff;
-    color: #000;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 body.dark-mode {
-    background-color: #121212;
-    color: #fff;
+    background-color: #1e2a38; /* Dark blue background */
+    color: #d1dbe0ce; /* Soft white text */
 }
 
 .container {
@@ -15,6 +15,10 @@ body.dark-mode {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
+}
+
+body.dark-mode .container {
+    border-color: #444;
 }
 
 input, button {
@@ -91,16 +95,20 @@ input, button {
     margin: auto;
 }
 
-/* Dark mode styles */
-body.dark-mode .container {
-    border-color: #444;
+/* Dark mode styles for inputs and buttons */
+body.dark-mode input, body.dark-mode button {
+    background-color: #2a3b4d; /* Darker blue */
+    color: #d1dbe0; /* Soft white text */
+    border: 1px solid #444;
 }
 
+/* Dark mode styles for help text */
 body.dark-mode .help-icon .help-text {
     background-color: #333;
     border-color: #333;
 }
 
+/* Toggle switch styles */
 .switch {
     position: absolute;
     top: 20px;
