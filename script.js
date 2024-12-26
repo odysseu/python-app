@@ -25,6 +25,7 @@ function telechargerPDF() {
     const taux = document.getElementById('taux').value;
     const duree = document.getElementById('duree').value;
 
+    const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     doc.text(20, 20, 'Rapport de Simulation du Projet Immobilier');
     doc.text(20, 30, `Prix du bien : ${prix} €`);
