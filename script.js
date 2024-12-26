@@ -87,7 +87,7 @@ function genererGraphique(mensualite, loyer, duree, dureeLocation) {
         dataLoyers.push(cumulLoyers);
     }
 
-    new Chart(ctx, {
+    const chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -114,6 +114,9 @@ function genererGraphique(mensualite, loyer, duree, dureeLocation) {
             },
         },
     });
+
+    // Convertir le graphique en image et générer le PDF
+    chart.toBase64Image();
 }
 
 function telechargerPDF(prix, fraisNotaire, fraisCommission, totalAchat, montantEmprunte, taux, mensualite, coutTotalInterets, coutTotalEmprunt, loyer, dureeLocation, revenusLoyers, coutNet, anneeRentable) {
@@ -140,6 +143,11 @@ function telechargerPDF(prix, fraisNotaire, fraisCommission, totalAchat, montant
     doc.text(20, 170, `Revenus totaux des loyers : ${revenusLoyers} €`);
     doc.text(20, 180, `Coût net après loyers : ${coutNet} €`);
     doc.text(20, 190, `Achat rentable après : ${anneeRentable !== null ? anneeRentable + ' ans' : 'Non rentable'}`);
+
+    // Ajouter le graphique au PDF
+    const chart = document.getElementById('myChart');
+    const chartImage = chart.toDataURL('image/png');
+    doc.addImage(chartImage, 'PNG', 15, 200, 180, 90);
 
     doc.save('rapport-immobilier.pdf');
 }
