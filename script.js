@@ -51,26 +51,10 @@ function genererRapport() {
     }
 
     // Calculer quand l'achat sera remboursé
-    let cumulInvestissement = totalAchat;
-    let annee = 0;
-    let remboursement = false;
-
-    while (!remboursement) {
-        let coutAnnee = mensualite * 12;
-        let loyerFictifAnnee = loyerFictif * 12;
-        let difference = loyerFictifAnnee - coutAnnee;
-
-        cumulInvestissement -= difference;
-
-        let revenusLoyers = loyers.reduce((acc, cur) => acc + (cur.loyer * cur.dureeLocation * 12), 0);
-        cumulInvestissement -= revenusLoyers;
-
-        if (cumulInvestissement <= 0) {
-            remboursement = true;
-        }
-
-        annee++;
-    }
+    const cumulInvestissement = totalAchat;
+    const cumulLoyerMensuel = loyers.reduce((acc, cur) => acc + (cur.loyer * cur.dureeLocation), 0);
+    const differenceMensuelle = loyerFictif - mensualite + cumulLoyerMensuel;
+    const remboursementAnnee = cumulInvestissement / (differenceMensuelle * 12);
 
     const resultat = `
         <h2>Résultat de la simulation</h2>
@@ -92,15 +76,15 @@ function genererRapport() {
         <div>
             <h3>Financement</h3>
             <p>Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €</p>
-            <p>Remboursement après : ${annee} ans</p>
+            <p>Remboursement après : ${Math.ceil(remboursementAnnee)} ans</p>
         </div>
-        <button onclick="telechargerPDF(${prix}, ${fraisNotaire}, ${fraisCommission}, ${totalAchat}, ${montantEmprunte}, ${(taux * 100).toFixed(2)}, ${mensualite.toFixed(2)}, ${coutTotalInterets.toFixed(2)}, ${coutTotalEmprunt.toFixed(2)}, ${loyerFictif}, ${annee}, ${JSON.stringify(loyers)})">Télécharger PDF</button>
+        <button onclick="telechargerPDF(${prix}, ${fraisNotaire}, ${fraisCommission}, ${totalAchat}, ${montantEmprunte}, ${(taux * 100).toFixed(2)}, ${mensualite.toFixed(2)}, ${coutTotalInterets.toFixed(2)}, ${coutTotalEmprunt.toFixed(2)}, ${loyerFictif}, ${Math.ceil(remboursementAnnee)}, ${JSON.stringify(loyers)})">Télécharger PDF</button>
     `;
 
     document.getElementById('resultat').innerHTML = resultat;
 
     // Générer le graphique
-    genererGraphique(mensualite, loyerFictif, duree, loyers, annee);
+    genererGraphique(mensualite, loyerFictif, duree, loyers, Math.ceil(remboursementAnnee));
 }
 
 function genererGraphique(mensualite, loyerFictif, duree, loyers, dureeRemboursement) {
