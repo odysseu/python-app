@@ -7,7 +7,14 @@ function genererRapport() {
     const dureeLocation = parseInt(document.getElementById('duree-location').value);
 
     const montantEmprunte = prix - apport;
-    const mensualite = (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -duree * 12));
+    let mensualite;
+
+    if (taux === 0) {
+        mensualite = montantEmprunte / (duree * 12);
+    } else {
+        mensualite = (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -duree * 12));
+    }
+
     const coutTotal = mensualite * duree * 12 + apport;
     const revenusLoyers = loyer * dureeLocation * 12;
     const coutNet = coutTotal - revenusLoyers;
