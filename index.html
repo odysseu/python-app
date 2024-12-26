@@ -14,9 +14,17 @@
     <div class="container">
         <h1>Calculette Projet Immobilier</h1>
         <form id="calculette-form">
+            <h2>Achat</h2>
             <label for="prix">Prix du bien (€):</label>
             <input type="number" id="prix" name="prix" value="300000" required>
 
+            <label for="notaire">Frais de notaire (%):</label>
+            <input type="number" step="0.01" id="notaire" name="notaire" value="8" required>
+
+            <label for="commission">Commission agence (%):</label>
+            <input type="number" step="0.01" id="commission" name="commission" value="0" required>
+
+            <h2>Emprunt</h2>
             <label for="apport">Apport personnel (€):</label>
             <input type="number" id="apport" name="apport" value="0" required>
 
@@ -26,11 +34,12 @@
             <label for="duree">Durée du prêt (années):</label>
             <input type="number" id="duree" name="duree" value="20" required>
 
+            <h2>Financement</h2>
             <label for="loyer">Loyer mensuel (€):</label>
             <input type="number" id="loyer" name="loyer" value="0" required>
 
-            <label for="duree-location">Durée de location (années):</label>
-            <input type="number" id="duree-location" name="duree-location" value="0" required>
+            <label for="duree-location">Durée de location (% de l'année):</label>
+            <input type="number" step="0.01" id="duree-location" name="duree-location" value="0" required>
 
             <button type="button" onclick="genererRapport()">Calculer</button>
         </form>
