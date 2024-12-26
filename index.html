@@ -4,25 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculette Projet Immobilier</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .container { max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
-        input, button { padding: 10px; margin: 10px 0; width: calc(100% - 22px); }
-        .loyer-container { display: flex; align-items: center; }
-        .loyer-container input { flex: 1; margin-right: 10px; }
-        .loyer-container button { width: auto; padding: 10px; }
-        #myChart { max-width: 800px; margin: auto; }
-        .form-section { display: flex; justify-content: space-between; }
-        .form-section > div { flex: 0 0 48%; }
-        .help-icon { cursor: pointer; position: relative; display: inline-block; }
-        .help-icon .help-text { visibility: hidden; width: 200px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -100px; opacity: 0; transition: opacity 0.3s; }
-        .help-icon .help-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #555 transparent transparent transparent; }
-        .help-icon:hover .help-text { visibility: visible; opacity: 1; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Calculette Projet Immobilier</h1>
+        <label class="switch">
+            <input type="checkbox" id="dark-mode-toggle">
+            <span class="slider round"></span>
+        </label>
         <form id="calculette-form">
             <div class="form-section">
                 <div>
@@ -69,5 +59,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
+    <script src="dark-mode.js"></script>
 </body>
 </html>

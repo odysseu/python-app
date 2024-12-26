@@ -39,8 +39,8 @@ function genererRapport() {
         mensualite = (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -duree * 12));
     }
 
-    const coutTotalInterets = mensualite * duree * 12 - montantEmprunte;
-    const coutTotalEmprunt = mensualite * duree * 12 + apport;
+    const coutTotalEmprunt = mensualite * duree * 12;
+    const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
 
     // Collecter les loyers
     const loyers = [];
