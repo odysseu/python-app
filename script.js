@@ -1,3 +1,12 @@
+function resetForm() {
+    document.getElementById("calculette-form").reset();
+    document.getElementById("resultat").innerHTML = "";
+    const canvas = document.getElementById("myChart");
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Existing JavaScript code for the calculator
 let loyerCount = 1;
 
 function ajouterLoyer() {
