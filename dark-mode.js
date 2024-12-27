@@ -8,12 +8,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function switchTheme(theme) {
         if (theme === "dark-mode") {
             document.body.classList.add("dark-mode");
-            logo.src = "logo-dark.png";
-            favicon.href = "favicon-dark.ico";
+            logo.src = "logos/logo-dark.png";
+            favicon.href = "logos/favicon-dark.ico";
         } else {
             document.body.classList.remove("dark-mode");
-            logo.src = "logo-light.png";
-            favicon.href = "favicon-light.ico";
+            logo.src = "logos/logo-light.png";
+            favicon.href = "logos/favicon-light.ico";
         }
     }
 
