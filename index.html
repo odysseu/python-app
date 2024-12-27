@@ -4,17 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculette Projet Immobilier</title>
-    <!-- Favicon -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
+    <link id="favicon" rel="icon" href="favicon-light.ico" type="image/x-icon">
 </head>
 <body>
     <div class="container">
-        <header>
-            <!-- Logo -->
-            <img src="logo.png" alt="Logo" class="logo" onclick="resetForm()">
+        <div class="header">
+            <img src="logo-light.png" alt="Logo" id="logo" onclick="resetForm()">
             <h1>Calculette Projet Immobilier</h1>
-        </header>
+        </div>
         <label class="switch">
             <input type="checkbox" id="dark-mode-toggle">
             <span class="slider round"></span>
@@ -66,5 +64,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
     <script src="dark-mode.js"></script>
+    <script>
+        function resetForm() {
+            document.getElementById('calculette-form').reset();
+        }
+    </script>
 </body>
 </html>
