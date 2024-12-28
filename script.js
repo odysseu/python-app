@@ -28,6 +28,26 @@ function supprimerLoyer(button) {
     container.removeChild(button.parentElement);
 }
 
+// Fonction pour calculer le cumul mensuel de patrimoine en location
+function calculCumulLocation(loyerFictif, duree, taxeHabitation) {
+    const cumulLocation = [];
+    for (let i = 0; i <= duree; i++) {
+        cumulLocation.push(loyerFictif * 12 * i + taxeHabitation);
+    }
+    return cumulLocation;
+}
+
+// Fonction pour calculer le cumul mensuel de patrimoine en achat
+function calculCumulAchat(mensualite, taxeFonciere, duree) {
+    const cumulAchat = [];
+    let cumul = 0;
+    for (let i = 0; i <= duree; i++) {
+        cumul += mensualite * 12  + taxeFonciere;
+        cumulAchat.push(cumul);
+    }
+    return cumulAchat;
+}
+
 // Fonction pour générer le rapport
 function genererRapport() {
     const prix = parseFloat(document.getElementById('prix').value);
@@ -37,6 +57,8 @@ function genererRapport() {
     const taux = parseFloat(document.getElementById('taux').value) / 100;
     const duree = parseInt(document.getElementById('duree').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
+    const taxeHabitation = parseFloat(document.getElementById('taxe_habitation').value);
+    const taxeFonciere = parseFloat(document.getElementById('taxe_fonciere').value);
 
     const fraisNotaire = prix * notaire;
     const fraisCommission = prix * commission;
@@ -46,15 +68,8 @@ function genererRapport() {
     const coutTotalEmprunt = mensualite * duree * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
 
-    const loyers = Array.from({ length: loyerCount }, (_, i) => ({
-        loyer: parseFloat(document.getElementById(`loyer-${i}`).value),
-        dureeLocation: parseFloat(document.getElementById(`duree-location-${i}`).value) / 100
-    }));
-
-    const totalLoyers = loyers.reduce((acc, cur) => acc + (cur.loyer * cur.dureeLocation * 12), 0);
-    const revenusMensuels = totalLoyers / 12;
-    const depensesMensuelles = mensualite - loyerFictif;
-    const anneeRemboursement = Math.max(Math.ceil(coutTotalEmprunt / ((revenusMensuels - depensesMensuelles) * 12)), 0);
+    const cumulLocation = calculCumulLocation(loyerFictif, duree, taxeHabitation);
+    const cumulAchat = calculCumulAchat(mensualite, taxeFonciere, duree);
 
     const resultat = `
         <h2>Résultat de la simulation</h2>
@@ -76,7 +91,8 @@ function genererRapport() {
         <div>
             <h3>Financement</h3>
             <p>Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €</p>
-            <p>Remboursement après : ${anneeRemboursement} ans</p>
+            <p>Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €</p>
+            <p>Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €</p>
         </div>
         <button type="button" id="telecharger-button">Télécharger PDF</button>
     `;
@@ -87,42 +103,26 @@ function genererRapport() {
     document.getElementById('telecharger-button').addEventListener('click', telechargerPDF);
 
     // Générer le graphique
-    genererGraphique(mensualite, loyerFictif, duree, loyers, anneeRemboursement);
+    genererGraphique(cumulLocation, cumulAchat, duree);
 }
 
 // Fonction pour générer le graphique
-function genererGraphique(mensualite, loyerFictif, duree, loyers, anneeRemboursement) {
+function genererGraphique(cumulLocation, cumulAchat, duree) {
     const ctx = document.getElementById('myChart').getContext('2d');
-    const labels = Array.from({ length: anneeRemboursement + 1 }, (_, i) => `Année ${i}`);
-    const dataEmprunt = [];
-    const dataLoyers = [];
-    const dataLoyersCumules = [];
-    let cumulEmprunt = 0;
-    let cumulLoyers = 0;
-    let cumulInvestissement = 0;
-
-    for (let i = 0; i <= anneeRemboursement; i++) {
-        cumulEmprunt += mensualite * 12;
-        cumulInvestissement += loyerFictif * 12;
-        cumulLoyers = loyers.reduce((acc, cur) => acc + (cur.loyer * cur.dureeLocation * 12), 0);
-        dataEmprunt.push(cumulEmprunt);
-        dataLoyers.push(cumulLoyers);
-        dataLoyersCumules.push(cumulInvestissement);
-    }
-
+    const labels = Array.from({ length: duree + 1 }, (_, i) => `Année ${i}`);
+    
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [
-                { label: 'Cumul Emprunt', data: dataEmprunt, borderColor: 'rgb(255, 99, 132)', fill: false },
-                { label: 'Cumul Loyers', data: dataLoyers, borderColor: 'rgb(54, 162, 235)', fill: false },
-                { label: 'Cumul Investissement', data: dataLoyersCumules, borderColor: 'rgb(75, 192, 192)', fill: false }
+                { label: 'Cumul Patrimoine en Location', data: cumulLocation, borderColor: 'rgb(255, 99, 132)', fill: false },
+                { label: 'Cumul Patrimoine en Achat', data: cumulAchat, borderColor: 'rgb(54, 162, 235)', fill: false }
             ]
         },
         options: {
             responsive: true,
-            title: { display: true, text: 'Volumes d\'argent dans le temps' }
+            title: { display: true, text: 'Cumul de Patrimoine dans le Temps' }
         }
     });
 }
@@ -140,6 +140,8 @@ function telechargerPDF() {
     const taux = parseFloat(document.getElementById('taux').value) / 100;
     const duree = parseInt(document.getElementById('duree').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
+    const taxeHabitation = parseFloat(document.getElementById('taxe_habitation').value);
+    const taxeFonciere = parseFloat(document.getElementById('taxe_fonciere').value);
 
     const fraisNotaire = prix * notaire;
     const fraisCommission = prix * commission;
@@ -164,11 +166,13 @@ function telechargerPDF() {
 
     doc.text(20, 140, 'Financement');
     doc.text(20, 150, `Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €`);
+    doc.text(20, 160, `Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €`);
+    doc.text(20, 170, `Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €`);
 
     // Ajouter le graphique au PDF
     const chart = document.getElementById('myChart');
     const chartImage = chart.toDataURL('image/png');
-    doc.addImage(chartImage, 'PNG', 15, 160, 180, 90);
+    doc.addImage(chartImage, 'PNG', 15, 180, 180, 90);
 
     doc.save('rapport-immobilier.pdf');
 }
