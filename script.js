@@ -28,30 +28,81 @@ function supprimerLoyer(button) {
     container.removeChild(button.parentElement);
 }
 
-// Fonction pour calculer le cumul mensuel de patrimoine en location
-function calculCumulLocation(loyerFictif, duree, taxeHabitation) {
-    const cumulLocation = [];
-    for (let i = 0; i <= duree; i++) {
-        cumulLocation.push(loyerFictif * 12 * i + taxeHabitation);
+// Fonction pour trouver l'année de rentabilité
+function trouverAnneeCroisement(
+    prix,       // Valeur initiale du bien immobilier
+    tauxAppreciation,  // Taux annuel d'appréciation du bien
+    mensualite,        // Mensualité du crédit
+    taxeFonciere,      // Taxe foncière annuelle
+    loyerFictif,       // Loyer fictif mensuel
+    taxeHabitation,    // Taxe d'habitation annuelle
+    tauxRendement,     // Taux de rendement annuel des investissements économisés
+    dureeMax           // Durée maximale pour rechercher le croisement
+) {
+    for (let t = 1; t <= dureeMax; t++) {
+        // Calcul du patrimoine achat
+        const valeurBien = prix * Math.pow(1 + tauxAppreciation, t);
+        const cumulMensualites = mensualite * 12 * t;
+        const cumulTaxeFonciere = taxeFonciere * t;
+        const patrimoineAchat = valeurBien - cumulMensualites - cumulTaxeFonciere;
+
+        // Calcul du patrimoine location
+        const economiesAnnuelles = (loyerFictif * 12) - taxeHabitation;
+        const cumulEconomies = economiesAnnuelles * t;
+        const patrimoineLocation = cumulEconomies * Math.pow(1 + tauxRendement, t);
+
+        // Vérification du croisement
+        if (patrimoineLocation > patrimoineAchat) {
+            return t;
+        }
     }
-    return cumulLocation;
+
+    // Aucun croisement trouvé dans la durée spécifiée
+    return null;
+}
+// Fonction pour calculer le cumul de patrimoine en cas d'achat
+function calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, duree) {
+    let patrimoine = 0;
+    let valeurBien = mensualite * 12 * duree; // Approximativement le coût total payé pour le bien
+    let cumulDepenses = 0;
+
+    for (let t = 1; t <= duree; t++) {
+        // Appréciation annuelle de la valeur du bien
+        valeurBien *= (1 + tauxAppreciation);
+
+        // Cumul des dépenses : mensualités et taxe foncière
+        cumulDepenses += (mensualite * 12) + taxeFonciere;
+
+        // Calcul du patrimoine net
+        patrimoine = valeurBien - cumulDepenses;
+    }
+
+    return patrimoine;
 }
 
-// Fonction pour calculer le cumul mensuel de patrimoine en achat
-function calculCumulAchat(mensualite, taxeFonciere, duree) {
-    const cumulAchat = [];
-    let cumul = 0;
-    for (let i = 0; i <= duree; i++) {
-        cumul += mensualite * 12  + taxeFonciere;
-        cumulAchat.push(cumul);
+// Fonction pour calculer le cumul de patrimoine en cas de location
+function calculCumulLocation(loyerFictif, duree, taxeHabitation, tauxRendementAnnuel) {
+    let patrimoine = 0;
+
+    for (let t = 1; t <= duree; t++) {
+        // Économies annuelles théoriques : différence entre loyer fictif et absence de charges d'achat
+        let economieAnnuelle = loyerFictif - taxeHabitation;
+
+        // Ajout des économies annuelles au patrimoine
+        patrimoine += economieAnnuelle;
+
+        // Application du rendement annuel sur les économies investies
+        patrimoine *= (1 + tauxRendementAnnuel);
     }
-    return cumulAchat;
+
+    return patrimoine;
 }
 
 // Fonction pour générer le rapport
 function genererRapport() {
     const prix = parseFloat(document.getElementById('prix').value);
     const notaire = parseFloat(document.getElementById('notaire').value) / 100;
+    const tauxAppreciation = parseFloat(document.getElementById('taux-appreciation').value) / 100;
     const commission = parseFloat(document.getElementById('commission').value) / 100;
     const apport = parseFloat(document.getElementById('apport').value);
     const taux = parseFloat(document.getElementById('taux').value) / 100;
@@ -59,6 +110,8 @@ function genererRapport() {
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
     const taxeHabitation = parseFloat(document.getElementById('taxe_habitation').value);
     const taxeFonciere = parseFloat(document.getElementById('taxe_fonciere').value);
+    const tauxRendement = parseFloat(document.getElementById('taux-rendement').value) / 100;
+    const dureeMax = 500;
 
     const fraisNotaire = prix * notaire;
     const fraisCommission = prix * commission;
@@ -68,8 +121,19 @@ function genererRapport() {
     const coutTotalEmprunt = mensualite * duree * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
 
-    const cumulLocation = calculCumulLocation(loyerFictif, duree, taxeHabitation);
-    const cumulAchat = calculCumulAchat(mensualite, taxeFonciere, duree);
+    const anneeRemboursement = trouverAnneeCroisement(
+        prix,       // Valeur initiale du bien immobilier
+        tauxAppreciation,  // Taux annuel d'appréciation du bien
+        mensualite,        // Mensualité du crédit
+        taxeFonciere,      // Taxe foncière annuelle
+        loyerFictif,       // Loyer fictif mensuel
+        taxeHabitation,    // Taxe d'habitation annuelle
+        tauxRendement,     // Taux de rendement annuel des investissements
+        dureeMax           // Durée maximale pour rechercher le croisement
+    );
+    const maxDuree = Math.max(duree, anneeRemboursement) + 5; //5 ans de plus pour voir les évolutions après amortissement
+    const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendementAnnuel);
+    const cumulAchat = calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, maxDuree);
 
     const resultat = `
         <h2>Résultat de la simulation</h2>
@@ -77,6 +141,7 @@ function genererRapport() {
             <h3>Achat</h3>
             <p>Prix du bien : ${prix.toFixed(2)} €</p>
             <p>Frais de notaire : ${fraisNotaire.toFixed(2)} €</p>
+            <p>Taux d'appréciation : ${tauxAppreciation.toFixed(2)} %</p>
             <p>Commission d'agence : ${fraisCommission.toFixed(2)} €</p>
             <p>Total achat : ${totalAchat.toFixed(2)} €</p>
         </div>
@@ -107,9 +172,9 @@ function genererRapport() {
 }
 
 // Fonction pour générer le graphique
-function genererGraphique(cumulLocation, cumulAchat, duree) {
+function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
     const ctx = document.getElementById('myChart').getContext('2d');
-    const labels = Array.from({ length: duree + 1 }, (_, i) => `Année ${i}`);
+    const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `Année ${i}`);
     
     new Chart(ctx, {
         type: 'line',
@@ -122,7 +187,7 @@ function genererGraphique(cumulLocation, cumulAchat, duree) {
         },
         options: {
             responsive: true,
-            title: { display: true, text: 'Cumul de Patrimoine dans le Temps' }
+            title: { display: true, text: 'Cumul de Patrimoine dans le temps' }
         }
     });
 }
@@ -135,6 +200,8 @@ function telechargerPDF() {
 
     const prix = parseFloat(document.getElementById('prix').value);
     const notaire = parseFloat(document.getElementById('notaire').value) / 100;
+    const tauxAppreciation = parseFloat(document.getElementById('taux-appreciation').value) / 100;
+    const tauxRendement = parseFloat(document.getElementById('taux-rendement').value) / 100;
     const commission = parseFloat(document.getElementById('commission').value) / 100;
     const apport = parseFloat(document.getElementById('apport').value);
     const taux = parseFloat(document.getElementById('taux').value) / 100;
@@ -154,6 +221,7 @@ function telechargerPDF() {
     doc.text(20, 30, 'Achat');
     doc.text(20, 40, `Prix du bien : ${prix.toFixed(2)} €`);
     doc.text(20, 50, `Frais de notaire : ${fraisNotaire.toFixed(2)} €`);
+    doc.text(20, 50, `Taux d'apppréciation : ${tauxAppreciation.toFixed(2)} %`);
     doc.text(20, 60, `Commission d'agence : ${fraisCommission.toFixed(2)} €`);
     doc.text(20, 70, `Total achat : ${totalAchat.toFixed(2)} €`);
 
@@ -167,6 +235,7 @@ function telechargerPDF() {
     doc.text(20, 140, 'Financement');
     doc.text(20, 150, `Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €`);
     doc.text(20, 160, `Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €`);
+    doc.text(20, 50, `Taux de rendement : ${tauxRendement.toFixed(2)} %`);
     doc.text(20, 170, `Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €`);
 
     // Ajouter le graphique au PDF
