@@ -131,8 +131,6 @@ function genererRapport() {
     const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
     const cumulAchat = calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, maxDuree);
 
-    // Générer le graphique
-    genererGraphique(cumulLocation, cumulAchat, maxDuree);
 
     // Concaténer les résultats et le graphique
     const resultat = `
@@ -163,11 +161,18 @@ function genererRapport() {
             <h3>Amortissement</h3>
             <p>Achat amorti à partir de l'année : ${anneeRemboursement}</p>
         </div>
-        <canvas id="myChart"></canvas>
-        <button type="button" id="telecharger-button">Télécharger PDF</button>
     `;
 
     document.getElementById('resultat').innerHTML = resultat;
+    // Générer le graphique
+    genererGraphique(cumulLocation, cumulAchat, maxDuree);
+
+    const rapportBouton = 
+        `
+        <button type="button" id="telecharger-button">Télécharger PDF</button>
+        `;
+
+    document.getElementById('rapportBouton').innerHTML = rapportBouton;
     
     // Attacher l'événement de téléchargement au bouton
     document.getElementById('telecharger-button').addEventListener('click', telechargerPDF);
@@ -230,6 +235,8 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             }
         }
     });
+    // 4. Update the HTML content of the canvas element
+    document.getElementById('myChart').innerHTML = myChart;
 }
 
 // Fonction pour forcer le mode clair
