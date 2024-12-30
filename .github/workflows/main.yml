@@ -1,4 +1,4 @@
-name: Test, Build and Deploy
+name: Test and Deploy
 
 on:
   push:
@@ -37,33 +37,9 @@ jobs:
       - name: Run tests
         run: npm test
 
-  build:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the site
-        run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './build'
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
 
     steps:
       - name: Checkout
