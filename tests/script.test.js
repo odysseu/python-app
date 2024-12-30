@@ -23,6 +23,7 @@ test('vérifie que les fonctions existent', () => {
   expect(typeof dom.window.resetForm).toBe('function');
   expect(typeof dom.window.ajouterLoyer).toBe('function');
   expect(typeof dom.window.supprimerLoyer).toBe('function');
+  expect(typeof dom.window.extraireLoyers).toBe('function');
   expect(typeof dom.window.trouverAnneePertesInferieures).toBe('function');
   expect(typeof dom.window.calculPertesAchat).toBe('function');
   expect(typeof dom.window.calculPertesLocation).toBe('function');

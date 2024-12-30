@@ -28,37 +28,48 @@ function supprimerLoyer(button) {
     container.removeChild(button.parentElement);
 }
 
+// Fonction pour extraire les loyers depuis le conteneur
+function extraireLoyers() {
+    const cumulLoyers = 0;
+    const loyersContainer = document.getElementById('loyers-container');
+    const loyerContainers = loyersContainer.querySelectorAll('.loyer-container');
+
+    loyerContainers.forEach(container => {
+        const loyer = parseFloat(container.querySelector('input[name^="loyer-"]').value);
+        const dureeLocation = parseFloat(container.querySelector('input[name^="duree-location-"]').value);
+        cumulLoyers += loyer * (dureeLocation / 100) * 12;
+    });
+    return cumulLoyers;
+}
+
 // Fonction pour trouver l'année de croisement des pertes entre achat et location
-function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyer) {
-    console.log('Max duree to check :', duree);
-    const pertesAchat = [];
+function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyer, cumulLoyers) {
     const coutInitial = prix + fraisNotaire + fraisCommission - apport;
-    const pertesLocation = [];
     for (let t = 1; t <= duree; t++) {
-        console.log('year checked :', t);
         // achat
         const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
         const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;
         const cumulTaxeFonciere = taxeFonciere * t;
-        const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente;
+        const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente - cumulLoyers;
         // location
         const cumulLoyer = loyer * 12 * t;
         if (cumulLoyer > pertesNettes) {
             return t - 1; // Croisement des pertes
         }
     }
-    return null; // Pas de croisement des pertes
+    console.log('Pas de croisement des pertes avant ', duree, ' ans');
+    return duree; // Pas de croisement des pertes
 }
 
 // Fonction pour calculer les pertes en cas d'achat avec revente
-function calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret) {
+function calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, cumulLoyers) {
     const pertesAchat = [];
     const coutInitial = prix + fraisNotaire + fraisCommission - apport;
     for (let t = 1; t <= duree; t++) {
         const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
         const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;
         const cumulTaxeFonciere = taxeFonciere * t;
-        const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente;
+        const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente - cumulLoyers;
         pertesAchat.push(pertesNettes);
     }
 
@@ -97,11 +108,12 @@ function genererRapport() {
     const mensualite = taux === 0 ? montantEmprunte / (dureePret * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -dureePret * 12));
     const coutTotalEmprunt = mensualite * dureePret * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
+    const cumulLoyers = extraireLoyers();
     
-    const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif);
+    const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, cumulLoyers);
     const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
-    const cumulLocation = calculPertesLocation(loyerFictif, maxDuree); //calculPertesLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
-    const cumulAchat = calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret);
+    const cumulLocation = calculPertesLocation(loyerFictif, maxDuree);
+    const cumulAchat = calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret, cumulLoyers);
         //prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree, dureePret);
 
 
@@ -164,8 +176,6 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
     // 2. Get the canvas element
     const ctx = document.getElementById('myChart').getContext('2d');
     const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `Année ${i}`);
-    const maxY = Math.round(Math.max(Math.max(...cumulLocation), Math.max(...cumulAchat)) * 1.01, -2);
-    console.log("maxY :", maxY);
     // 3. Create the new chart
     myChart = new Chart(ctx, {
         type: 'line',
@@ -173,13 +183,13 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             labels: labels,
             datasets: [
                 { 
-                    label: 'Cumul Patrimoine en Location', 
+                    label: 'Cumul dépenses en Location',
                     data: cumulLocation, 
                     borderColor: 'rgb(255, 99, 132)', 
                     fill: false 
                 },
                 { 
-                    label: 'Cumul Patrimoine en Achat', 
+                    label: 'Cumul dépenses en Achat',
                     data: cumulAchat, 
                     borderColor: 'rgb(54, 162, 235)', 
                     fill: false 
