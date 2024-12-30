@@ -1,3 +1,5 @@
+import 'jspdf-autotable';
+
 // Fonction pour réinitialiser le formulaire et le graphique
 function resetForm() {
     document.getElementById("calculette-form").reset();
@@ -29,22 +31,22 @@ function supprimerLoyer(button) {
 }
 
 // Fonction pour trouver l'année de rentabilité
-function trouverAnneeCroisement(prix, tauxAppreciation, mensualite, taxeFonciere, loyerFictif, taxeHabitation, tauxRendement, dureeMax) {
+function trouverAnneeCroisement(prix, tauxAppreciation, mensualite, taxeFonciere, loyerFictif, tauxRendement, dureeMax, dureePret) {
     for (let t = 1; t <= dureeMax; t++) {
         // Calcul du patrimoine achat
         const valeurBien = prix * Math.pow(1 + tauxAppreciation, t);
-        const cumulMensualites = mensualite * 12 * t;
+        const cumulMensualites = t <= dureePret ? mensualite * 12 : 0;
         const cumulTaxeFonciere = taxeFonciere * t;
         const patrimoineAchat = valeurBien - cumulMensualites - cumulTaxeFonciere;
 
         // Calcul du patrimoine location
-        const economiesAnnuelles = (loyerFictif * 12) - taxeHabitation;
+        const economiesAnnuelles = loyerFictif * 12;
         const cumulEconomies = economiesAnnuelles * t;
         const patrimoineLocation = cumulEconomies * Math.pow(1 + tauxRendement, t);
 
         // Vérification du croisement
         if (patrimoineLocation > patrimoineAchat) {
-            return t;
+            return t - 1;
         }
     }
 
@@ -59,7 +61,7 @@ function calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, dure
     for (let t = 1; t <= duree; t++) {
         // Calcul du patrimoine achat
         const valeurBien = prix * Math.pow(1 + tauxAppreciation, t);
-        const cumulMensualites = mensualite * 12 * t;
+        const cumulMensualites = t <= dureePret ? mensualite * 12 : 0;
         const cumulTaxeFonciere = taxeFonciere * t;
         const patrimoineAchat = valeurBien - cumulMensualites - cumulTaxeFonciere;
         cumulAchat.push(patrimoineAchat);
@@ -92,7 +94,7 @@ function genererRapport() {
     const commission = parseFloat(document.getElementById('commission').value) / 100;
     const apport = parseFloat(document.getElementById('apport').value);
     const taux = parseFloat(document.getElementById('taux').value) / 100;
-    const duree = parseInt(document.getElementById('duree').value);
+    const dureePret = parseInt(document.getElementById('duree-pret').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
     const taxeHabitation = parseFloat(document.getElementById('taxe_habitation').value);
     const taxeFonciere = parseFloat(document.getElementById('taxe_fonciere').value);
@@ -103,8 +105,8 @@ function genererRapport() {
     const fraisCommission = prix * commission;
     const totalAchat = prix + fraisNotaire + fraisCommission;
     const montantEmprunte = totalAchat - apport;
-    const mensualite = taux === 0 ? montantEmprunte / (duree * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -duree * 12));
-    const coutTotalEmprunt = mensualite * duree * 12;
+    const mensualite = taux === 0 ? montantEmprunte / (dureePret * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -dureePret * 12));
+    const coutTotalEmprunt = mensualite * dureePret * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
 
     const anneeRemboursement = trouverAnneeCroisement(
@@ -117,7 +119,7 @@ function genererRapport() {
         tauxRendement,     // Taux de rendement annuel des investissements
         dureeMax           // Durée maximale pour rechercher le croisement
     );
-    const maxDuree = Math.max(duree, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
+    const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
     const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
     const cumulAchat = calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree);
 
@@ -260,7 +262,7 @@ function telechargerPDF() {
     const commission = parseFloat(document.getElementById('commission').value) / 100;
     const apport = parseFloat(document.getElementById('apport').value);
     const taux = parseFloat(document.getElementById('taux').value) / 100;
-    const duree = parseInt(document.getElementById('duree').value);
+    const dureePret = parseInt(document.getElementById('duree-pret').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
     const taxeHabitation = parseFloat(document.getElementById('taxe_habitation').value);
     const taxeFonciere = parseFloat(document.getElementById('taxe_fonciere').value);
@@ -269,29 +271,47 @@ function telechargerPDF() {
     const fraisCommission = prix * commission;
     const totalAchat = prix + fraisNotaire + fraisCommission;
     const montantEmprunte = totalAchat - apport;
-    const mensualite = taux === 0 ? montantEmprunte / (duree * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -duree * 12));
-    const coutTotalEmprunt = mensualite * duree * 12;
+    const mensualite = taux === 0 ? montantEmprunte / (dureePret * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -dureePret * 12));
+    const coutTotalEmprunt = mensualite * dureePret * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
 
-    doc.text(20, 30, 'Achat');
-    doc.text(20, 40, `Prix du bien : ${prix.toFixed(2)} €`);
-    doc.text(20, 50, `Frais de notaire : ${fraisNotaire.toFixed(2)} €`);
-    doc.text(20, 60, `Taux d'appréciation : ${tauxAppreciation.toFixed(2)} %`);
-    doc.text(20, 70, `Commission d'agence : ${fraisCommission.toFixed(2)} €`);
-    doc.text(20, 80, `Total achat : ${totalAchat.toFixed(2)} €`);
+    // Tableau Achat
+    doc.autoTable({
+        head: [['Achat', 'Valeur']],
+        body: [
+            ['Prix du bien', `${prix.toFixed(2)} €`],
+            ['Frais de notaire', `${fraisNotaire.toFixed(2)} €`],
+            [`Taux d'appréciation`, `${tauxAppreciation.toFixed(2)} %`],
+            [`Commission d'agence`, `${fraisCommission.toFixed(2)} €`],
+            ['Total achat', `${totalAchat.toFixed(2)} €`]
+        ],
+        startY: 20
+    });
 
-    doc.text(20, 90, 'Emprunt');
-    doc.text(20, 100, `Montant emprunté : ${montantEmprunte.toFixed(2)} €`);
-    doc.text(20, 110, `Taux d'intérêt : ${(taux * 100).toFixed(2)} %`);
-    doc.text(20, 120, `Mensualité : ${mensualite.toFixed(2)} €`);
-    doc.text(20, 130, `Intérêts totaux : ${coutTotalInterets.toFixed(2)} €`);
-    doc.text(20, 140, `Coût total emprunt : ${coutTotalEmprunt.toFixed(2)} €`);
+    // Tableau Emprunt
+    doc.autoTable({
+        head: [['Emprunt', 'Valeur']],
+        body: [
+            ['Montant emprunté', `${montantEmprunte.toFixed(2)} €`],
+            [`Taux d'intérêt`, `${(taux * 100).toFixed(2)} %`],
+            ['Mensualité', `${mensualite.toFixed(2)} €`],
+            ['Intérêts totaux', `${coutTotalInterets.toFixed(2)} €`],
+            ['Coût total emprunt', `${coutTotalEmprunt.toFixed(2)} €`]
+        ],
+        startY: doc.previousAutoTable.finalY + 10
+    });
 
-    doc.text(20, 150, 'Financement');
-    doc.text(20, 160, `Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €`);
-    doc.text(20, 170, `Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €`);
-    doc.text(20, 180, `Taux de rendement : ${tauxRendement.toFixed(2)} %`);
-    doc.text(20, 190, `Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €`);
+    // Tableau Financement
+    doc.autoTable({
+        head: [['Financement', 'Valeur']],
+        body: [
+            ['Loyer fictif mensuel', `${loyerFictif.toFixed(2)} €`],
+            ['Taxe d\'habitation annuelle', `${taxeHabitation.toFixed(2)} €`],
+            ['Taux de rendement', `${tauxRendement.toFixed(2)} %`],
+            ['Taxe foncière annuelle', `${taxeFonciere.toFixed(2)} €`]
+        ],
+        startY: doc.previousAutoTable.finalY + 10
+    });
 
     // Ajouter le graphique au PDF
     const chart = document.getElementById('myChart');

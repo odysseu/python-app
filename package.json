@@ -12,6 +12,8 @@
         "jest-environment-jsdom": "^29.7.0"
     },
     "dependencies": {
-        "jest-fixed-jsdom": "^0.0.9"
+        "jest-fixed-jsdom": "^0.0.9",
+        "jspdf": "^2.5.2",
+        "jspdf-autotable": "^3.8.4"
     }
 }
