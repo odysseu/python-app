@@ -60,6 +60,7 @@ function trouverAnneeCroisement(
     // Aucun croisement trouvé dans la durée spécifiée
     return null;
 }
+
 // Fonction pour calculer le cumul de patrimoine en cas d'achat
 function calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, duree) {
     let patrimoine = 0;
@@ -131,8 +132,8 @@ function genererRapport() {
         tauxRendement,     // Taux de rendement annuel des investissements
         dureeMax           // Durée maximale pour rechercher le croisement
     );
-    const maxDuree = Math.max(duree, anneeRemboursement) + 5; //5 ans de plus pour voir les évolutions après amortissement
-    const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendementAnnuel);
+    const maxDuree = Math.max(duree, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
+    const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
     const cumulAchat = calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, maxDuree);
 
     const resultat = `
@@ -168,7 +169,7 @@ function genererRapport() {
     document.getElementById('telecharger-button').addEventListener('click', telechargerPDF);
 
     // Générer le graphique
-    genererGraphique(cumulLocation, cumulAchat, duree);
+    genererGraphique(cumulLocation, cumulAchat, maxDuree);
 }
 
 // Fonction pour générer le graphique
@@ -221,7 +222,7 @@ function telechargerPDF() {
     doc.text(20, 30, 'Achat');
     doc.text(20, 40, `Prix du bien : ${prix.toFixed(2)} €`);
     doc.text(20, 50, `Frais de notaire : ${fraisNotaire.toFixed(2)} €`);
-    doc.text(20, 50, `Taux d'apppréciation : ${tauxAppreciation.toFixed(2)} %`);
+    doc.text(20, 50, `Taux d'appréciation : ${tauxAppreciation.toFixed(2)} %`);
     doc.text(20, 60, `Commission d'agence : ${fraisCommission.toFixed(2)} €`);
     doc.text(20, 70, `Total achat : ${totalAchat.toFixed(2)} €`);
 
@@ -240,8 +241,8 @@ function telechargerPDF() {
 
     // Ajouter le graphique au PDF
     const chart = document.getElementById('myChart');
-    const chartImage = chart.toDataURL('image/png');
-    doc.addImage(chartImage, 'PNG', 15, 180, 180, 90);
+    const chartImage = chart.toDataURL('image/jpeg');
+    doc.addImage(chartImage, 'JPEG', 15, 210, 180, 90);
 
     doc.save('rapport-immobilier.pdf');
 }
