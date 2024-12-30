@@ -30,10 +30,12 @@ function supprimerLoyer(button) {
 
 // Fonction pour trouver l'année de croisement des pertes entre achat et location
 function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyer) {
+    console.log('Max duree to check :', duree);
     const pertesAchat = [];
     const coutInitial = prix + fraisNotaire + fraisCommission - apport;
     const pertesLocation = [];
     for (let t = 1; t <= duree; t++) {
+        console.log('year checked :', t);
         // achat
         const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
         const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;
@@ -41,7 +43,7 @@ function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, appo
         const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente;
         // location
         const cumulLoyer = loyer * 12 * t;
-        if (pertesNettes > cumulLoyer) {
+        if (cumulLoyer > pertesNettes) {
             return t - 1; // Croisement des pertes
         }
     }
