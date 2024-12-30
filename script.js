@@ -57,6 +57,7 @@ function calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, duree) {
     let patrimoine = 0;
     let valeurBien = mensualite * 12 * duree; // Approximativement le coût total payé pour le bien
     let cumulDepenses = 0;
+    const cumulAchat = [];
 
     for (let t = 1; t <= duree; t++) {
         // Appréciation annuelle de la valeur du bien
@@ -67,14 +68,16 @@ function calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, duree) {
 
         // Calcul du patrimoine net
         patrimoine = valeurBien - cumulDepenses;
+        cumulAchat.push(patrimoine);
     }
 
-    return patrimoine;
+    return cumulAchat;
 }
 
 // Fonction pour calculer le cumul de patrimoine en cas de location
 function calculCumulLocation(loyerFictif, duree, taxeHabitation, tauxRendementAnnuel) {
     let patrimoine = 0;
+    const cumulLocation = [];
 
     for (let t = 1; t <= duree; t++) {
         // Économies annuelles théoriques : différence entre loyer fictif et absence de charges d'achat
@@ -85,9 +88,10 @@ function calculCumulLocation(loyerFictif, duree, taxeHabitation, tauxRendementAn
 
         // Application du rendement annuel sur les économies investies
         patrimoine *= (1 + tauxRendementAnnuel);
+        cumulLocation.push(patrimoine);
     }
 
-    return patrimoine;
+    return cumulLocation;
 }
 
 // Fonction pour générer le rapport
@@ -177,16 +181,38 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
         data: {
             labels: labels,
             datasets: [
-                { label: 'Cumul Patrimoine en Location', data: cumulLocation, borderColor: 'rgb(255, 99, 132)', fill: false },
-                { label: 'Cumul Patrimoine en Achat', data: cumulAchat, borderColor: 'rgb(54, 162, 235)', fill: false }
+                { 
+                    label: 'Cumul Patrimoine en Location', 
+                    data: cumulLocation, 
+                    borderColor: 'rgb(255, 99, 132)', 
+                    fill: false 
+                },
+                { 
+                    label: 'Cumul Patrimoine en Achat', 
+                    data: cumulAchat, 
+                    borderColor: 'rgb(54, 162, 235)', 
+                    fill: false 
+                }
             ]
         },
         options: {
             devicePixelRatio: 2,
             responsive: true,
-            title: {
-                display: true,
-                text: 'Cumul de Patrimoine dans le temps'
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+                        }
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Cumul de Patrimoine dans le temps'
+                }
             }
         }
     });
