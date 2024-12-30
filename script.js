@@ -1,5 +1,3 @@
-import 'jspdf-autotable';
-
 // Fonction pour réinitialiser le formulaire et le graphique
 function resetForm() {
     document.getElementById("calculette-form").reset();
