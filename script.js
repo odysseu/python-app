@@ -69,7 +69,7 @@ function calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, dure
 }
 
 // Fonction pour calculer le cumul de patrimoine en cas de location
-function calculCumulLocation(loyerFictif, duree, taxeHabitation, tauxRendementAnnuel) {
+function calculCumulLocation(loyerFictif, duree, taxeHabitation, tauxRendement) {
     const cumulLocation = [];
 
     for (let t = 1; t <= duree; t++) {
