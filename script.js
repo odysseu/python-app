@@ -30,7 +30,7 @@ function supprimerLoyer(button) {
 
 // Fonction pour extraire les loyers depuis le conteneur
 function extraireLoyers() {
-    const cumulLoyers = 0;
+    let cumulLoyers = 0;
     const loyersContainer = document.getElementById('loyers-container');
     const loyerContainers = loyersContainer.querySelectorAll('.loyer-container');
 
@@ -43,7 +43,7 @@ function extraireLoyers() {
 }
 
 // Fonction pour trouver l'année de croisement des pertes entre achat et location
-function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyer, cumulLoyers) {
+function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyer, tauxLoyerFictif, cumulLoyers) {
     const coutInitial = prix + fraisNotaire + fraisCommission - apport;
     for (let t = 1; t <= duree; t++) {
         // achat
@@ -52,7 +52,7 @@ function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, appo
         const cumulTaxeFonciere = taxeFonciere * t;
         const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente - cumulLoyers;
         // location
-        const cumulLoyer = loyer * 12 * t;
+        const cumulLoyer = (loyer * Math.pow(1 + tauxLoyerFictif, t)) * 12 * t;
         if (cumulLoyer > pertesNettes) {
             return t - 1; // Croisement des pertes
         }
@@ -77,10 +77,10 @@ function calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensuali
 }
 
 // Fonction pour calculer les pertes en cas de location
-function calculPertesLocation(loyer, duree) {
+function calculPertesLocation(loyer, duree, tauxLoyerFictif) {
     const pertesLocation = [];
     for (let t = 1; t <= duree; t++) {
-        const cumulLoyer = loyer * 12 * t;
+        const cumulLoyer = (loyer * Math.pow(1 + tauxLoyerFictif, t)) * 12 * t;
         pertesLocation.push(cumulLoyer);
     }
     return pertesLocation;
@@ -98,7 +98,7 @@ function genererRapport() {
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
     const taxeHabitation = parseFloat(document.getElementById('taxe-habitation').value);
     const taxeFonciere = parseFloat(document.getElementById('taxe-fonciere').value);
-    const tauxRendement = parseFloat(document.getElementById('taux-rendement').value) / 100;
+    const tauxLoyerFictif = parseFloat(document.getElementById('taux-loyer-fictif').value) / 100;
     const dureeMax = 500;
 
     const fraisNotaire = prix * notaire;
@@ -108,14 +108,12 @@ function genererRapport() {
     const mensualite = taux === 0 ? montantEmprunte / (dureePret * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -dureePret * 12));
     const coutTotalEmprunt = mensualite * dureePret * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
-    const cumulLoyers = extraireLoyers();
-    
-    const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, cumulLoyers);
-    const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
-    const cumulLocation = calculPertesLocation(loyerFictif, maxDuree);
-    const cumulAchat = calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret, cumulLoyers);
-        //prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree, dureePret);
 
+    const cumulLoyers = extraireLoyers();
+    const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers);
+    const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
+    const cumulLocation = calculPertesLocation(loyerFictif, maxDuree, tauxLoyerFictif);
+    const cumulAchat = calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret, cumulLoyers);
 
     // Concaténer les résultats et le graphique
     const resultat = `
@@ -248,7 +246,7 @@ function telechargerPDF() {
     const prix = parseFloat(document.getElementById('prix').value);
     const notaire = parseFloat(document.getElementById('notaire').value) / 100;
     const tauxAppreciation = parseFloat(document.getElementById('taux-appreciation').value) / 100;
-    const tauxRendement = parseFloat(document.getElementById('taux-rendement').value) / 100;
+    const tauxLoyerFictif = parseFloat(document.getElementById('taux-loyer-fictif').value) / 100;
     const commission = parseFloat(document.getElementById('commission').value) / 100;
     const apport = parseFloat(document.getElementById('apport').value);
     const taux = parseFloat(document.getElementById('taux').value) / 100;
@@ -296,8 +294,8 @@ function telechargerPDF() {
         head: [['Financement', 'Valeur']],
         body: [
             ['Loyer fictif mensuel', `${loyerFictif.toFixed(2)} €`],
+            ['Taux d\'évolution du loyer fictif', `${tauxLoyerFictif.toFixed(2)} %`],
             ['Taxe d\'habitation annuelle', `${taxeHabitation.toFixed(2)} €`],
-            ['Taux de rendement', `${tauxRendement.toFixed(2)} %`],
             ['Taxe foncière annuelle', `${taxeFonciere.toFixed(2)} €`]
         ],
         startY: doc.previousAutoTable.finalY + 10

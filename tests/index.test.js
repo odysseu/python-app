@@ -24,7 +24,7 @@ test('vérifie que les champs du formulaire existent', () => {
   const prixInput = container.querySelector('#prix');
   const notaireInput = container.querySelector('#notaire');
   const tauxAppreciationInput = container.querySelector('#taux-appreciation');
-  const tauxRendementInput = container.querySelector('#taux-rendement');
+  const tauxLoyerFictifInput = container.querySelector('#taux-loyer-fictif');
   const commissionInput = container.querySelector('#commission');
   const apportInput = container.querySelector('#apport');
   const tauxInput = container.querySelector('#taux');
@@ -36,7 +36,7 @@ test('vérifie que les champs du formulaire existent', () => {
   expect(prixInput).toBeInTheDocument();
   expect(notaireInput).toBeInTheDocument();
   expect(tauxAppreciationInput).toBeInTheDocument();
-  expect(tauxRendementInput).toBeInTheDocument();
+  expect(tauxLoyerFictifInput).toBeInTheDocument();
   expect(commissionInput).toBeInTheDocument();
   expect(apportInput).toBeInTheDocument();
   expect(tauxInput).toBeInTheDocument();
