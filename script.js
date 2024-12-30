@@ -185,7 +185,7 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
     const ctx = document.getElementById('myChart').getContext('2d');
     const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `Année ${i}`);
     const maxY = Math.max(Math.max(...cumulLocation), Math.max(...cumulAchat)) * 1.01;
-    logger.log("maxY :", maxY);
+    console.log("maxY :", maxY);
     // 3. Create the new chart
     myChart = new Chart(ctx, {
         type: 'line',
