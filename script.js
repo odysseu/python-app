@@ -44,6 +44,7 @@ function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, appo
         if (pertesNettes > cumulLoyer) {
             return t - 1; // Croisement des pertes
         }
+    }
     return null; // Pas de croisement des pertes
 }
 
