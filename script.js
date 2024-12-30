@@ -200,7 +200,8 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true,
+                    min: 0,
+                    max: Math.max(Math.max(...cumulLocation), Math.max(...cumulAchat)) * 1.01,
                     ticks: {
                         callback: function(value) {
                             return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
