@@ -53,22 +53,16 @@ function trouverAnneeCroisement(prix, tauxAppreciation, mensualite, taxeFonciere
 }
 
 // Fonction pour calculer le cumul de patrimoine en cas d'achat
-function calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, duree) {
-    let patrimoine = 0;
-    let valeurBien = mensualite * 12 * duree; // Approximativement le coût total payé pour le bien
-    let cumulDepenses = 0;
+function calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, duree) {
     const cumulAchat = [];
 
     for (let t = 1; t <= duree; t++) {
-        // Appréciation annuelle de la valeur du bien
-        valeurBien *= (1 + tauxAppreciation);
-
-        // Cumul des dépenses : mensualités et taxe foncière
-        cumulDepenses += (mensualite * 12) + taxeFonciere;
-
-        // Calcul du patrimoine net
-        patrimoine = valeurBien - cumulDepenses;
-        cumulAchat.push(patrimoine);
+        // Calcul du patrimoine achat
+        const valeurBien = prix * Math.pow(1 + tauxAppreciation, t);
+        const cumulMensualites = mensualite * 12 * t;
+        const cumulTaxeFonciere = taxeFonciere * t;
+        const patrimoineAchat = valeurBien - cumulMensualites - cumulTaxeFonciere;
+        cumulAchat.push(patrimoineAchat);
     }
 
     return cumulAchat;
@@ -76,19 +70,15 @@ function calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, duree) {
 
 // Fonction pour calculer le cumul de patrimoine en cas de location
 function calculCumulLocation(loyerFictif, duree, taxeHabitation, tauxRendementAnnuel) {
-    let patrimoine = 0;
     const cumulLocation = [];
 
     for (let t = 1; t <= duree; t++) {
-        // Économies annuelles théoriques : différence entre loyer fictif et absence de charges d'achat
-        let economieAnnuelle = loyerFictif - taxeHabitation;
+        // Calcul du patrimoine location
+        const depenseAnnuelles = (loyerFictif * 12) - taxeHabitation;
+        const cumulDepenses = depenseAnnuelles * t;
+        const patrimoineLocation = cumulDepenses * Math.pow(1 + tauxRendement, t);
 
-        // Ajout des économies annuelles au patrimoine
-        patrimoine += economieAnnuelle;
-
-        // Application du rendement annuel sur les économies investies
-        patrimoine *= (1 + tauxRendementAnnuel);
-        cumulLocation.push(patrimoine);
+        cumulLocation.push(patrimoineLocation);
     }
 
     return cumulLocation;
@@ -129,7 +119,7 @@ function genererRapport() {
     );
     const maxDuree = Math.max(duree, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
     const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
-    const cumulAchat = calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, maxDuree);
+    const cumulAchat = calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree);
 
 
     // Concaténer les résultats et le graphique
@@ -218,7 +208,6 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             devicePixelRatio: 2,
             scales: {
                 y: {
-                    beginAtZero: true,
                     suggestedMax: maxY,
                     ticks: {
                         callback: function(value) {
