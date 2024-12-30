@@ -53,7 +53,7 @@ function trouverAnneeCroisement(prix, tauxAppreciation, mensualite, taxeFonciere
 }
 
 // Fonction pour calculer le cumul de patrimoine en cas d'achat
-function calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, duree) {
+function calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, duree, dureePret) {
     const cumulAchat = [];
 
     for (let t = 1; t <= duree; t++) {
@@ -119,7 +119,7 @@ function genererRapport() {
     );
     const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
     const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
-    const cumulAchat = calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree);
+    const cumulAchat = calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree, dureePret);
 
 
     // Concaténer les résultats et le graphique
