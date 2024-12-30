@@ -10,5 +10,8 @@
         "@testing-library/jest-dom": "^6.6.3",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0"
+    },
+    "dependencies": {
+        "jest-fixed-jsdom": "^0.0.9"
     }
 }

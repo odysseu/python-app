@@ -1,12 +1,12 @@
 global.TextEncoder = require("util").TextEncoder;
+global.TextDecoder = require("util").TextDecoder;
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
-const { screen } = require('@testing-library/dom');
-require('@testing-library/jest-dom/extend-expect');
+require('@testing-library/jest-dom');
 
-const html = readFileSync(resolve(__dirname, '../index.html'), 'utf8');
-const scriptContent = readFileSync(resolve(__dirname, '../script.js'), 'utf8');
+const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
+const scriptContent = fs.readFileSync(path.resolve(__dirname, '../script.js'), 'utf8');
 
 let dom;
 let container;
