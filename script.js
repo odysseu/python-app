@@ -35,8 +35,9 @@ function extraireLoyers() {
     const loyerContainers = loyersContainer.querySelectorAll('.loyer-container');
 
     loyerContainers.forEach(container => {
-        const loyer = parseFloat(container.querySelector('input[name^="loyer-"]').value);
-        const dureeLocation = parseFloat(container.querySelector('input[name^="duree-location-"]').value);
+        console.log('container:', container);
+        let loyer = parseFloat(container.querySelector('input[name^="loyer"]').value);
+        let dureeLocation = parseFloat(container.querySelector('input[name^="duree-location"]').value);
         cumulLoyers += loyer * (dureeLocation / 100) * 12;
     });
     return cumulLoyers;
