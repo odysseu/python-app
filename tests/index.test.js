@@ -28,10 +28,10 @@ test('vérifie que les champs du formulaire existent', () => {
   const commissionInput = container.querySelector('#commission');
   const apportInput = container.querySelector('#apport');
   const tauxInput = container.querySelector('#taux');
-  const dureeInput = container.querySelector('#duree');
+  const dureeInput = container.querySelector('#duree-pret');
   const loyerFictifInput = container.querySelector('#loyer-fictif');
-  const taxeHabitationInput = container.querySelector('#taxe_habitation');
-  const taxeFonciereInput = container.querySelector('#taxe_fonciere');
+  const taxeHabitationInput = container.querySelector('#taxe-habitation');
+  const taxeFonciereInput = container.querySelector('#taxe-fonciere');
 
   expect(prixInput).toBeInTheDocument();
   expect(notaireInput).toBeInTheDocument();

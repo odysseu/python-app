@@ -94,8 +94,8 @@ function genererRapport() {
     const taux = parseFloat(document.getElementById('taux').value) / 100;
     const dureePret = parseInt(document.getElementById('duree-pret').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
-    const taxeHabitation = parseFloat(document.getElementById('taxe_habitation').value);
-    const taxeFonciere = parseFloat(document.getElementById('taxe_fonciere').value);
+    const taxeHabitation = parseFloat(document.getElementById('taxe-habitation').value);
+    const taxeFonciere = parseFloat(document.getElementById('taxe-fonciere').value);
     const tauxRendement = parseFloat(document.getElementById('taux-rendement').value) / 100;
     const dureeMax = 500;
 
@@ -262,8 +262,8 @@ function telechargerPDF() {
     const taux = parseFloat(document.getElementById('taux').value) / 100;
     const dureePret = parseInt(document.getElementById('duree-pret').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
-    const taxeHabitation = parseFloat(document.getElementById('taxe_habitation').value);
-    const taxeFonciere = parseFloat(document.getElementById('taxe_fonciere').value);
+    const taxeHabitation = parseFloat(document.getElementById('taxe-habitation').value);
+    const taxeFonciere = parseFloat(document.getElementById('taxe-fonciere').value);
 
     const fraisNotaire = prix * notaire;
     const fraisCommission = prix * commission;
