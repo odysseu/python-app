@@ -35,8 +35,8 @@ function extraireLoyers() {
     const loyerContainers = loyersContainer.querySelectorAll('.loyer-container');
 
     if (loyerContainers.length === 0) {
-        return cumulLoyers;
         console.log('Il n\'y a pas de loyers.');
+        return cumulLoyers;
     }
 
     loyerContainers.forEach(container => {
