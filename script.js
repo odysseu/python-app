@@ -29,16 +29,7 @@ function supprimerLoyer(button) {
 }
 
 // Fonction pour trouver l'année de rentabilité
-function trouverAnneeCroisement(
-    prix,       // Valeur initiale du bien immobilier
-    tauxAppreciation,  // Taux annuel d'appréciation du bien
-    mensualite,        // Mensualité du crédit
-    taxeFonciere,      // Taxe foncière annuelle
-    loyerFictif,       // Loyer fictif mensuel
-    taxeHabitation,    // Taxe d'habitation annuelle
-    tauxRendement,     // Taux de rendement annuel des investissements économisés
-    dureeMax           // Durée maximale pour rechercher le croisement
-) {
+function trouverAnneeCroisement(prix, tauxAppreciation, mensualite, taxeFonciere, loyerFictif, taxeHabitation, tauxRendement, dureeMax) {
     for (let t = 1; t <= dureeMax; t++) {
         // Calcul du patrimoine achat
         const valeurBien = prix * Math.pow(1 + tauxAppreciation, t);
@@ -160,6 +151,10 @@ function genererRapport() {
             <p>Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €</p>
             <p>Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €</p>
         </div>
+        <div>
+            <h3>Amortissement</h3>
+            <p>Achat amorti à partir de l'année : ${anneeRemboursement}</p>
+        </div>
         <button type="button" id="telecharger-button">Télécharger PDF</button>
     `;
 
@@ -187,14 +182,37 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             ]
         },
         options: {
+            devicePixelRatio: 2,
             responsive: true,
-            title: { display: true, text: 'Cumul de Patrimoine dans le temps' }
+            title: {
+                display: true,
+                text: 'Cumul de Patrimoine dans le temps'
+            }
         }
     });
 }
 
+// Fonction pour forcer le mode clair
+function forcerModeClair() {
+    const body = document.body;
+    const wasDarkMode = body.classList.contains('dark-mode');
+    if (wasDarkMode) {
+        body.classList.remove('dark-mode');
+    }
+    return wasDarkMode;
+}
+
+// Fonction pour restaurer le mode après la génération du PDF
+function restaurerMode(wasDarkMode) {
+    if (wasDarkMode) {
+        document.body.classList.add('dark-mode');
+    }
+}
+
 // Fonction pour télécharger le PDF
 function telechargerPDF() {
+    const wasDarkMode = forcerModeClair();
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     doc.text(20, 20, 'Rapport de Simulation du Projet Immobilier');
@@ -222,29 +240,31 @@ function telechargerPDF() {
     doc.text(20, 30, 'Achat');
     doc.text(20, 40, `Prix du bien : ${prix.toFixed(2)} €`);
     doc.text(20, 50, `Frais de notaire : ${fraisNotaire.toFixed(2)} €`);
-    doc.text(20, 50, `Taux d'appréciation : ${tauxAppreciation.toFixed(2)} %`);
-    doc.text(20, 60, `Commission d'agence : ${fraisCommission.toFixed(2)} €`);
-    doc.text(20, 70, `Total achat : ${totalAchat.toFixed(2)} €`);
+    doc.text(20, 60, `Taux d'appréciation : ${tauxAppreciation.toFixed(2)} %`);
+    doc.text(20, 70, `Commission d'agence : ${fraisCommission.toFixed(2)} €`);
+    doc.text(20, 80, `Total achat : ${totalAchat.toFixed(2)} €`);
 
-    doc.text(20, 80, 'Emprunt');
-    doc.text(20, 90, `Montant emprunté : ${montantEmprunte.toFixed(2)} €`);
-    doc.text(20, 100, `Taux d'intérêt : ${(taux * 100).toFixed(2)} %`);
-    doc.text(20, 110, `Mensualité : ${mensualite.toFixed(2)} €`);
-    doc.text(20, 120, `Intérêts totaux : ${coutTotalInterets.toFixed(2)} €`);
-    doc.text(20, 130, `Coût total emprunt : ${coutTotalEmprunt.toFixed(2)} €`);
+    doc.text(20, 90, 'Emprunt');
+    doc.text(20, 100, `Montant emprunté : ${montantEmprunte.toFixed(2)} €`);
+    doc.text(20, 110, `Taux d'intérêt : ${(taux * 100).toFixed(2)} %`);
+    doc.text(20, 120, `Mensualité : ${mensualite.toFixed(2)} €`);
+    doc.text(20, 130, `Intérêts totaux : ${coutTotalInterets.toFixed(2)} €`);
+    doc.text(20, 140, `Coût total emprunt : ${coutTotalEmprunt.toFixed(2)} €`);
 
-    doc.text(20, 140, 'Financement');
-    doc.text(20, 150, `Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €`);
-    doc.text(20, 160, `Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €`);
-    doc.text(20, 50, `Taux de rendement : ${tauxRendement.toFixed(2)} %`);
-    doc.text(20, 170, `Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €`);
+    doc.text(20, 150, 'Financement');
+    doc.text(20, 160, `Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €`);
+    doc.text(20, 170, `Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €`);
+    doc.text(20, 180, `Taux de rendement : ${tauxRendement.toFixed(2)} %`);
+    doc.text(20, 190, `Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €`);
 
     // Ajouter le graphique au PDF
     const chart = document.getElementById('myChart');
-    const chartImage = chart.toDataURL('image/jpeg');
-    doc.addImage(chartImage, 'JPEG', 15, 210, 180, 90);
+    const chartImage = chart.toDataURL('image/png');
+    doc.addImage(chartImage, 'PNG', 15, 200, 180, 90);
 
     doc.save('rapport-immobilier.pdf');
+
+    restaurerMode(wasDarkMode);
 }
 
 // Attacher l'événement de génération de rapport au bouton "Calculer"
