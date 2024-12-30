@@ -8,16 +8,6 @@
     <link id="favicon" rel="icon" href="logos/favicon-light.ico" type="image/x-icon">
 </head>
 <body>
-    <canvas id="myChart"></canvas>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
-    <script src="dark-mode.js"></script>
-    <script>
-        function resetForm() {
-            document.getElementById('calculette-form').reset();
-        }
-    </script>
     <header>
         <div class="logo-container">
             <img src="logos/logo-light.png" alt="Logo" class="logo" id="logo" onclick="resetForm()">
@@ -83,5 +73,15 @@
         </form>
         <div id="resultat"></div>
     </div>
+    <canvas id="myChart"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script src="dark-mode.js"></script>
+    <script>
+        function resetForm() {
+            document.getElementById('calculette-form').reset();
+        }
+    </script>
 </body>
 </html>
