@@ -164,19 +164,29 @@ function genererRapport() {
 
     document.getElementById('resultat').innerHTML = resultat;
 
+    // Générer le graphique
+    genererGraphique(cumulLocation, cumulAchat, maxDuree);
+    
     // Attacher l'événement de téléchargement au bouton
     document.getElementById('telecharger-button').addEventListener('click', telechargerPDF);
 
-    // Générer le graphique
-    genererGraphique(cumulLocation, cumulAchat, maxDuree);
 }
+
+let myChart = null; // Declare a variable to hold the chart instance globally or in the appropriate scope
 
 // Fonction pour générer le graphique
 function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
+    // 1. Destroy the existing chart if it exists
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    // 2. Get the canvas element
     const ctx = document.getElementById('myChart').getContext('2d');
     const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `Année ${i}`);
     
-    new Chart(ctx, {
+    // 3. Create the new chart
+    myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
