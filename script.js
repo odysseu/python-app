@@ -44,7 +44,7 @@ function extraireLoyers() {
         let dureeLocation = parseFloat(container.querySelector('input[name^="duree-location"]').value);
         cumulLoyers += loyer * (dureeLocation / 100) * 12;
     });
-
+    console.log('Cumul annuel loyers: ', cumulLoyers);
     return cumulLoyers;
 }
 
@@ -59,6 +59,7 @@ function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, appo
         const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente - cumulLoyers;
         // location
         const cumulLoyer = (loyer * Math.pow(1 + tauxLoyerFictif, t)) * 12 * t;
+        console.log('Cumul loyer: ', cumulLoyer, '\nCumul achat: ', pertesNettes);
         if (cumulLoyer > pertesNettes) {
             return t - 1; // Croisement des pertes
         }
