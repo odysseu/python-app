@@ -184,7 +184,8 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
     // 2. Get the canvas element
     const ctx = document.getElementById('myChart').getContext('2d');
     const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `Année ${i}`);
-    
+    const maxY = Math.max(Math.max(...cumulLocation), Math.max(...cumulAchat)) * 1.01;
+    logger.log("maxY :", maxY);
     // 3. Create the new chart
     myChart = new Chart(ctx, {
         type: 'line',
@@ -206,12 +207,12 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             ]
         },
         options: {
-            devicePixelRatio: 2,
             responsive: true,
+            devicePixelRatio: 2,
             scales: {
                 y: {
                     min: 0,
-                    max: Math.max(Math.max(...cumulLocation), Math.max(...cumulAchat)) * 1.01,
+                    max: maxY,
                     ticks: {
                         callback: function(value) {
                             return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
