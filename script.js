@@ -34,12 +34,17 @@ function extraireLoyers() {
     const loyersContainer = document.getElementById('loyers-container');
     const loyerContainers = loyersContainer.querySelectorAll('.loyer-container');
 
+    if (loyerContainers.length === 0) {
+        return cumulLoyers;
+        console.log('Il n\'y a pas de loyers.');
+    }
+
     loyerContainers.forEach(container => {
-        console.log('container:', container);
         let loyer = parseFloat(container.querySelector('input[name^="loyer"]').value);
         let dureeLocation = parseFloat(container.querySelector('input[name^="duree-location"]').value);
         cumulLoyers += loyer * (dureeLocation / 100) * 12;
     });
+
     return cumulLoyers;
 }
 
