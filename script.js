@@ -28,60 +28,48 @@ function supprimerLoyer(button) {
     container.removeChild(button.parentElement);
 }
 
-// Fonction pour trouver l'année de rentabilité
-function trouverAnneeCroisement(prix, tauxAppreciation, mensualite, taxeFonciere, loyerFictif, tauxRendement, dureeMax, dureePret) {
-    for (let t = 1; t <= dureeMax; t++) {
-        // Calcul du patrimoine achat
-        const valeurBien = prix * Math.pow(1 + tauxAppreciation, t);
-        const cumulMensualites = t <= dureePret ? mensualite * 12 : 0;
+// Fonction pour trouver l'année de croisement des pertes entre achat et location
+function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyer) {
+    const pertesAchat = [];
+    const coutInitial = prix + fraisNotaire + fraisCommission - apport;
+    const pertesLocation = [];
+    for (let t = 1; t <= duree; t++) {
+        // achat
+        const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
+        const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;
         const cumulTaxeFonciere = taxeFonciere * t;
-        const patrimoineAchat = valeurBien - cumulMensualites - cumulTaxeFonciere;
-
-        // Calcul du patrimoine location
-        const economiesAnnuelles = loyerFictif * 12;
-        const cumulEconomies = economiesAnnuelles * t;
-        const patrimoineLocation = cumulEconomies * Math.pow(1 + tauxRendement, t);
-
-        // Vérification du croisement
-        if (patrimoineLocation > patrimoineAchat) {
-            return t - 1;
+        const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente;
+        // location
+        const cumulLoyer = loyer * 12 * t;
+        if (pertesNettes > cumulLoyer) {
+            return t - 1; // Croisement des pertes
         }
-    }
-
-    // Aucun croisement trouvé dans la durée spécifiée
-    return null;
+    return null; // Pas de croisement des pertes
 }
 
-// Fonction pour calculer le cumul de patrimoine en cas d'achat
-function calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, duree, dureePret) {
-    const cumulAchat = [];
-
+// Fonction pour calculer les pertes en cas d'achat avec revente
+function calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret) {
+    const pertesAchat = [];
+    const coutInitial = prix + fraisNotaire + fraisCommission - apport;
     for (let t = 1; t <= duree; t++) {
-        // Calcul du patrimoine achat
-        const valeurBien = prix * Math.pow(1 + tauxAppreciation, t);
-        const cumulMensualites = t <= dureePret ? mensualite * 12 : 0;
+        const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
+        const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;
         const cumulTaxeFonciere = taxeFonciere * t;
-        const patrimoineAchat = valeurBien - cumulMensualites - cumulTaxeFonciere;
-        cumulAchat.push(patrimoineAchat);
+        const pertesNettes = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente;
+        pertesAchat.push(pertesNettes);
     }
 
-    return cumulAchat;
+    return pertesAchat;
 }
 
-// Fonction pour calculer le cumul de patrimoine en cas de location
-function calculCumulLocation(loyerFictif, duree, taxeHabitation, tauxRendement) {
-    const cumulLocation = [];
-
+// Fonction pour calculer les pertes en cas de location
+function calculPertesLocation(loyer, duree) {
+    const pertesLocation = [];
     for (let t = 1; t <= duree; t++) {
-        // Calcul du patrimoine location
-        const depenseAnnuelles = (loyerFictif * 12) - taxeHabitation;
-        const cumulDepenses = depenseAnnuelles * t;
-        const patrimoineLocation = cumulDepenses * Math.pow(1 + tauxRendement, t);
-
-        cumulLocation.push(patrimoineLocation);
+        const cumulLoyer = loyer * 12 * t;
+        pertesLocation.push(cumulLoyer);
     }
-
-    return cumulLocation;
+    return pertesLocation;
 }
 
 // Fonction pour générer le rapport
@@ -106,20 +94,12 @@ function genererRapport() {
     const mensualite = taux === 0 ? montantEmprunte / (dureePret * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -dureePret * 12));
     const coutTotalEmprunt = mensualite * dureePret * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
-
-    const anneeRemboursement = trouverAnneeCroisement(
-        prix,       // Valeur initiale du bien immobilier
-        tauxAppreciation,  // Taux annuel d'appréciation du bien
-        mensualite,        // Mensualité du crédit
-        taxeFonciere,      // Taxe foncière annuelle
-        loyerFictif,       // Loyer fictif mensuel
-        taxeHabitation,    // Taxe d'habitation annuelle
-        tauxRendement,     // Taux de rendement annuel des investissements
-        dureeMax           // Durée maximale pour rechercher le croisement
-    );
+    
+    const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif);
     const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
-    const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
-    const cumulAchat = calculCumulAchat(prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree, dureePret);
+    const cumulLocation = calculPertesLocation(loyerFictif, maxDuree); //calculPertesLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
+    const cumulAchat = calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret);
+        //prix, tauxAppreciation, mensualite, taxeFonciere, maxDuree, dureePret);
 
 
     // Concaténer les résultats et le graphique
@@ -208,7 +188,6 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             devicePixelRatio: 2,
             scales: {
                 y: {
-                    suggestedMax: maxY,
                     ticks: {
                         callback: function(value) {
                             return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });

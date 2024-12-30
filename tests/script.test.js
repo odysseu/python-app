@@ -23,9 +23,9 @@ test('vérifie que les fonctions existent', () => {
   expect(typeof dom.window.resetForm).toBe('function');
   expect(typeof dom.window.ajouterLoyer).toBe('function');
   expect(typeof dom.window.supprimerLoyer).toBe('function');
-  expect(typeof dom.window.trouverAnneeCroisement).toBe('function');
-  expect(typeof dom.window.calculCumulAchat).toBe('function');
-  expect(typeof dom.window.calculCumulLocation).toBe('function');
+  expect(typeof dom.window.trouverAnneePertesInferieures).toBe('function');
+  expect(typeof dom.window.calculPertesAchat).toBe('function');
+  expect(typeof dom.window.calculPertesLocation).toBe('function');
   expect(typeof dom.window.genererRapport).toBe('function');
   expect(typeof dom.window.genererGraphique).toBe('function');
   expect(typeof dom.window.forcerModeClair).toBe('function');
