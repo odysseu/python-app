@@ -1,10 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const { JSDOM } = require('jsdom');
-const { screen } = require('@testing-library/dom');
-require('@testing-library/jest-dom/extend-expect');
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+import { JSDOM } from 'jsdom';
+import '@testing-library/jest-dom/extend-expect';
 
-const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
+const html = readFileSync(resolve(__dirname, '../index.html'), 'utf8');
 
 let dom;
 let container;
