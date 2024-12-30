@@ -92,7 +92,7 @@ input, button {
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-    position: absolute;
+    position: relative;
     z-index: 1;
     bottom: 125%;
     left: 50%;
@@ -142,8 +142,10 @@ input, button {
 }
 
 #myChart {
-    max-width: 800px;
-    margin: auto;
+    display: block;
+    margin: 20px auto; /* Centrer le canvas et ajouter des marges */
+    max-width: 90%; /* Limiter la largeur maximale */
+    height: 400px; /* Définir une hauteur fixe */
 }
 
 /* Dark mode styles for inputs and buttons */

@@ -131,6 +131,10 @@ function genererRapport() {
     const cumulLocation = calculCumulLocation(loyerFictif, maxDuree, taxeHabitation, tauxRendement);
     const cumulAchat = calculCumulAchat(tauxAppreciation, mensualite, taxeFonciere, maxDuree);
 
+    // Générer le graphique
+    genererGraphique(cumulLocation, cumulAchat, maxDuree);
+
+    // Concaténer les résultats et le graphique
     const resultat = `
         <h2>Résultat de la simulation</h2>
         <div>
@@ -159,13 +163,11 @@ function genererRapport() {
             <h3>Amortissement</h3>
             <p>Achat amorti à partir de l'année : ${anneeRemboursement}</p>
         </div>
+        <canvas id="myChart"></canvas>
         <button type="button" id="telecharger-button">Télécharger PDF</button>
     `;
 
     document.getElementById('resultat').innerHTML = resultat;
-
-    // Générer le graphique
-    genererGraphique(cumulLocation, cumulAchat, maxDuree);
     
     // Attacher l'événement de téléchargement au bouton
     document.getElementById('telecharger-button').addEventListener('click', telechargerPDF);
@@ -184,7 +186,7 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
     // 2. Get the canvas element
     const ctx = document.getElementById('myChart').getContext('2d');
     const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `Année ${i}`);
-    const maxY = Math.max(Math.max(...cumulLocation), Math.max(...cumulAchat)) * 1.01;
+    const maxY = Math.round(Math.max(Math.max(...cumulLocation), Math.max(...cumulAchat)) * 1.01, -2);
     console.log("maxY :", maxY);
     // 3. Create the new chart
     myChart = new Chart(ctx, {
@@ -211,8 +213,8 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             devicePixelRatio: 2,
             scales: {
                 y: {
-                    min: 0,
-                    max: maxY,
+                    beginAtZero: true,
+                    suggestedMax: maxY,
                     ticks: {
                         callback: function(value) {
                             return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
