@@ -1,8 +1,5 @@
 /* Header styles */
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.sticky-header {
     position: -webkit-sticky; /* Pour les anciens navigateurs Safari */
     position: sticky;
     top: 0;
@@ -10,20 +7,28 @@ header {
     background-color: white; /* Couleur de fond du header */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ajout d'une ombre pour un effet visuel */
     padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-header .logo-container {
+.header-left, .header-right {
     display: flex;
     align-items: center;
 }
 
-header .header-logo {
+.header-left .logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-left .header-logo {
     width: 50px;
     height: 50px;
     cursor: pointer;
 }
 
-header .logo-help {
+.header-left .logo-help {
     visibility: hidden;
     width: 200px;
     background-color: #555;
@@ -40,7 +45,7 @@ header .logo-help {
     transition: opacity 0.3s;
 }
 
-header .logo-help::after {
+.header-left .logo-help::after {
     content: "";
     position: absolute;
     top: -5px;
@@ -51,7 +56,7 @@ header .logo-help::after {
     border-color: #555 transparent transparent transparent;
 }
 
-header .logo-container:hover .logo-help {
+.header-left .logo-container:hover .logo-help {
     visibility: visible;
     opacity: 1;
 }
@@ -60,6 +65,13 @@ header h1 {
     flex-grow: 1;
     text-align: center;
     margin: 0;
+}
+
+.github-logo {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    margin-left: 20px;
 }
 
 /* Toggle switch styles */
