@@ -92,8 +92,8 @@ function calculPertesLocation(loyer, duree, tauxLoyerFictif) {
     return pertesLocation;
 }
 
-// Fonction pour générer le rapport
 function genererRapport() {
+    // Récupérer les valeurs du formulaire
     const prix = parseFloat(document.getElementById('prix').value);
     const notaire = parseFloat(document.getElementById('notaire').value) / 100;
     const tauxAppreciation = parseFloat(document.getElementById('taux-appreciation').value) / 100;
@@ -122,29 +122,88 @@ function genererRapport() {
     const cumulAchat = calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret, cumulLoyers);
 
     // Concaténer les résultats et le graphique
-    const resultat = `
+    let resultat = `
         <h2>Résultat de la simulation</h2>
+
         <div>
             <h3>Achat</h3>
-            <p>Prix du bien : ${prix.toFixed(2)} €</p>
-            <p>Frais de notaire : ${fraisNotaire.toFixed(2)} €</p>
-            <p>Taux d'appréciation : ${tauxAppreciation.toFixed(2)} %</p>
-            <p>Commission d'agence : ${fraisCommission.toFixed(2)} €</p>
-            <p>Total achat : ${totalAchat.toFixed(2)} €</p>
+            <table>
+                <tr>
+                    <td>Prix du bien :</td>
+                    <td style="text-align: right;">${prix.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Frais de notaire :</td>
+                    <td style="text-align: right;">${fraisNotaire.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Taux d'appréciation :</td>
+                    <td style="text-align: right;">${tauxAppreciation.toFixed(2)} %</td>
+                </tr>
+                <tr>
+                    <td>Commission d'agence :</td>
+                    <td style="text-align: right;">${fraisCommission.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Total achat :</td>
+                    <td style="text-align: right;">${totalAchat.toFixed(2)} €</td>
+                </tr>
+            </table>
         </div>
         <div>
             <h3>Emprunt</h3>
-            <p>Montant emprunté : ${montantEmprunte.toFixed(2)} €</p>
-            <p>Taux d'intérêt : ${(taux * 100).toFixed(2)} %</p>
-            <p>Mensualité : ${mensualite.toFixed(2)} €</p>
-            <p>Intérêts totaux : ${coutTotalInterets.toFixed(2)} €</p>
-            <p>Coût total emprunt : ${coutTotalEmprunt.toFixed(2)} €</p>
+            <table>
+                <tr>
+                    <td>Montant emprunté :</td>
+                    <td style="text-align: right;">${montantEmprunte.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Taux d'intérêt :</td>
+                    <td style="text-align: right;">${(taux * 100).toFixed(2)} %</td>
+                </tr>
+                <tr>
+                    <td>Mensualité :</td>
+                    <td style="text-align: right;">${mensualite.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Intérêts totaux :</td>
+                    <td style="text-align: right;">${coutTotalInterets.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Coût total emprunt :</td>
+                    <td style="text-align: right;">${coutTotalEmprunt.toFixed(2)} €</td>
+                </tr>
+            </table>
         </div>
         <div>
             <h3>Financement</h3>
-            <p>Loyer fictif mensuel : ${loyerFictif.toFixed(2)} €</p>
-            <p>Taxe d'habitation annuelle : ${taxeHabitation.toFixed(2)} €</p>
-            <p>Taxe foncière annuelle : ${taxeFonciere.toFixed(2)} €</p>
+            <table>
+                <tr>
+                    <td>Loyer fictif mensuel :</td>
+                    <td style="text-align: right;">${loyerFictif.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Taxe d'habitation annuelle :</td>
+                    <td style="text-align: right;">${taxeHabitation.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>Taxe foncière annuelle :</td>
+                    <td style="text-align: right;">${taxeFonciere.toFixed(2)} €</td>
+                </tr>
+    `;
+
+    // Ajouter les loyers au résultat
+    if (cumulLoyers > 0) {
+        resultat += `
+                <tr>
+                    <td>Loyer mensuel moyen touché :</td>
+                    <td> style="text-align: right;">${cumulLoyers.toFixed(2) / 12} €</td>
+                </tr>
+        `;
+    }
+
+    resultat += `
+            </table>
         </div>
         <div>
             <h3>Amortissement</h3>

@@ -4,18 +4,18 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: white; /* Couleur de fond du header */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ajout d'une ombre pour un effet visuel */
+    background-color: d1dbe0; /* Couleur de fond du header */
+    box-shadow: 0 2px 5px #0c1116b4; /* Optionnel : ajout d'une ombre pour un effet visuel */
     padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    font-family: Arial, sans-serif;
 }
 
 body.dark-mode .sticky-header {
-    background-color: #333; /* Darker background for header */
+    background-color: #1e2a38; /* Darker background for header */
     color: #d1dbe0; /* Soft white text for header */
-    font-family: 'Courier New', Courier, monospace; /* Change font for dark mode */
 }
 
 .header-left, .header-right {
@@ -41,7 +41,7 @@ body.dark-mode .sticky-header {
     visibility: hidden;
     width: 200px;
     background-color: #555;
-    color: #fff;
+    color: #ffffff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
@@ -154,7 +154,7 @@ body.dark-mode {
 }
 
 body.dark-mode .container {
-    border-color: #444;
+    border-color: #1e2a38;
 }
 
 input, button {
