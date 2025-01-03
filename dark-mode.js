@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
             document.body.classList.add("dark-mode");
             homeLogo.src = "logos/home-logo-dark.png";
             favicon.href = "logos/favicon-dark.ico";
-            githubLogo.href = "logos/github-logo-dark.png";
+            githubLogo.src = "logos/github-logo-dark.png";
         } else {
             document.body.classList.remove("dark-mode");
             homeLogo.src = "logos/home-logo-light.png";
             favicon.href = "logos/favicon-light.ico";
-            githubLogo.href = "logos/github-logo-light.png";
+            githubLogo.src = "logos/github-logo-light.png";
         }
     }
 
