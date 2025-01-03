@@ -12,6 +12,12 @@
     justify-content: space-between;
 }
 
+body.dark-mode .sticky-header {
+    background-color: #333; /* Darker background for header */
+    color: #d1dbe0; /* Soft white text for header */
+    font-family: 'Courier New', Courier, monospace; /* Change font for dark mode */
+}
+
 .header-left, .header-right {
     display: flex;
     align-items: center;
@@ -132,13 +138,6 @@ body.dark-mode {
     color: #d1dbe0; /* Soft white text */
 }
 
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
 
 body.dark-mode .container {
     border-color: #444;
