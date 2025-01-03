@@ -142,10 +142,18 @@ input, button {
 }
 
 #myChart {
-    display: block;
-    margin: 20px auto; /* Centrer le canvas et ajouter des marges */
-    max-width: 90%; /* Limiter la largeur maximale */
-    height: 400px; /* Définir une hauteur fixe */
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+    min-width: 600px;
+    margin: 0 auto; /* Centre le graphique */
+}
+
+/* Styles pour petits écrans */
+@media (min-width: 600px) {
+    #myChart {
+        min-width: 100%;
+    }
 }
 
 /* Dark mode styles for inputs and buttons */

@@ -1,19 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
     const toggleSwitch = document.getElementById("dark-mode-toggle");
     const currentTheme = localStorage.getItem("theme") ? localStorage.getItem("theme") : null;
-    const logo = document.getElementById("logo");
+    const homeLogo = document.getElementById("home-logo");
     const favicon = document.getElementById("favicon");
+    const githubLogo = document.getElementById("github-logo");
 
     // Function to switch logos and favicons
     function switchTheme(theme) {
         if (theme === "dark-mode") {
             document.body.classList.add("dark-mode");
-            logo.src = "logos/logo-dark.png";
+            homeLogo.src = "logos/home-logo-dark.png";
             favicon.href = "logos/favicon-dark.ico";
+            githubLogo.href = "logos/github-logo-dark.png";
         } else {
             document.body.classList.remove("dark-mode");
-            logo.src = "logos/logo-light.png";
+            homeLogo.src = "logos/home-logo-light.png";
             favicon.href = "logos/favicon-light.ico";
+            githubLogo.href = "logos/github-logo-light.png";
         }
     }
 
