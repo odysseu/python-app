@@ -1,29 +1,25 @@
-.sticky-header {
+/* Header styles */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: -webkit-sticky; /* Pour les anciens navigateurs Safari */
     position: sticky;
     top: 0;
     z-index: 1000;
     background-color: white; /* Couleur de fond du header */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ajout d'une ombre pour un effet visuel */
-    padding: 10px 0;
-}
-
-/* Header styles */
-header {
-    display: flex;
-    align-items: center;
+    padding: 10px 20px;
 }
 
 header .logo-container {
-    position: absolute;
-    display: inline-block;
+    display: flex;
+    align-items: center;
 }
 
 header .header-logo {
     width: 50px;
     height: 50px;
-    position: absolute;
-    margin-right: 15px;
     cursor: pointer;
 }
 
@@ -60,6 +56,59 @@ header .logo-container:hover .logo-help {
     opacity: 1;
 }
 
+header h1 {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+}
+
+/* Toggle switch styles */
+.switch {
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-left: 20px; /* Adds space between the GitHub logo and the switch */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Other styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
@@ -178,52 +227,4 @@ body.dark-mode input, body.dark-mode button {
 body.dark-mode .help-icon .help-text {
     background-color: #333;
     border-color: #333;
-}
-
-/* Toggle switch styles */
-.switch {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
 }
