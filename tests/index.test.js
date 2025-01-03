@@ -46,6 +46,7 @@ test('vérifie que les identifiants utilisés dans script.js existent', () => {
   const taxeHabitationInput = container.querySelector('#taxe-habitation');
   const taxeFonciereInput = container.querySelector('#taxe-fonciere');
   const calculerButton = container.querySelector('#calculer-button');
+  const telechargerButton = container.querySelector('#telecharger-button');
   const rapportBouton = container.querySelector('#rapportBouton');
 
   expect(form).toBeInTheDocument();
@@ -64,5 +65,6 @@ test('vérifie que les identifiants utilisés dans script.js existent', () => {
   expect(taxeHabitationInput).toBeInTheDocument();
   expect(taxeFonciereInput).toBeInTheDocument();
   expect(calculerButton).toBeInTheDocument();
+  expect(telechargerButton).toBeInTheDocument();
   expect(rapportBouton).toBeInTheDocument();
 });
