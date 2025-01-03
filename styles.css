@@ -147,7 +147,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
     color: #000000;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 body.dark-mode {
