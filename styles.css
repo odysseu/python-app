@@ -84,11 +84,13 @@ header h1 {
     width: 32px;
     height: 32px;
     cursor: pointer;
+    display: flex;
+}
 }
 
 /* Toggle switch styles */
 .header-right .switch {
-    display: inline-block;
+    display: flex;
     width: 60px;
     height: 34px;
     position: relative;
@@ -138,6 +140,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
     color: #000000;
+    overflow: hidden;
 }
 
 body.dark-mode {
