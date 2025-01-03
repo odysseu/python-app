@@ -114,8 +114,9 @@ function genererRapport() {
     const mensualite = taux === 0 ? montantEmprunte / (dureePret * 12) : (montantEmprunte * taux / 12) / (1 - Math.pow(1 + taux / 12, -dureePret * 12));
     const coutTotalEmprunt = mensualite * dureePret * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
+    const cumulLoyers = extraireLoyers()
+    const cumulMensuelLoyers = cumulLoyers / 12;
 
-    const cumulMensuelLoyers = extraireLoyers() / 12;
     const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers);
     const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
     const cumulLocation = calculPertesLocation(loyerFictif, maxDuree, tauxLoyerFictif);
