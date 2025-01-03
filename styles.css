@@ -10,7 +10,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: Arial, sans-serif;
 }
 
 body.dark-mode .sticky-header {
@@ -44,6 +43,7 @@ body.dark-mode .sticky-header {
     cursor: pointer;
 }
 
+/* Help logo and switch styles */
 .header-left .logo-help,
 .header-right .logo-help,
 .header-right .switch-help {
@@ -56,9 +56,6 @@ body.dark-mode .sticky-header {
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    top: 60px;
-    left: 50%;
-    margin-left: -100px;
     opacity: 0;
     transition: opacity 0.3s;
 }
@@ -142,12 +139,11 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-/* Other styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
-    color: #000000;
-    overflow-x: hidden;
+    color: #000000; 
+    /* overflow-x: hidden;*/
 }
 
 body.dark-mode {
@@ -179,7 +175,8 @@ input, button {
     display: inline-block;
 }
 
-.help-icon .help-text {
+/* Help text styles */
+.help-text {
     visibility: hidden;
     width: 200px;
     background-color: #555;
@@ -187,31 +184,39 @@ input, button {
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-    position: relative;
+    position: absolute;
     z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -100px;
     opacity: 0;
     transition: opacity 0.3s;
+    pointer-events: none; /* Prevent the tooltip from intercepting mouse events */
 }
 
-.help-icon .help-text::after {
+
+/* Help text arrow styles */
+.help-text::after {
     content: "";
     position: absolute;
-    top: 100%;
+    bottom: -5px; /* Position the arrow at the bottom */
     left: 50%;
-    margin-left: -5px;
+    transform: translateX(-50%);
     border-width: 5px;
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
+
+body.dark-mode .help-text {
+    background-color: #333;
+    border-color: #333;
+}
+
 
 .help-icon:hover .help-text {
     visibility: visible;
     opacity: 1;
 }
 
+
+/* Form section styles */
 .form-section {
     display: flex;
     justify-content: space-between;
@@ -256,15 +261,8 @@ input, button {
     }
 }
 
-/* Dark mode styles for inputs and buttons */
 body.dark-mode input, body.dark-mode button {
     background-color: #2a3b4d; /* Darker blue */
     color: #d1dbe0; /* Soft white text */
     border: 1px solid #444;
-}
-
-/* Dark mode styles for help text */
-body.dark-mode .help-icon .help-text {
-    background-color: #333;
-    border-color: #333;
 }
