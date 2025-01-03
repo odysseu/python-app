@@ -4,7 +4,7 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: d1dbe0; /* Couleur de fond du header */
+    background-color: #d1dbe0; /* Couleur de fond du header */
     box-shadow: 0 2px 5px #0c1116b4; /* Optionnel : ajout d'une ombre pour un effet visuel */
     padding: 10px 20px;
     display: flex;
@@ -21,6 +21,15 @@ body.dark-mode .sticky-header {
 .header-left, .header-right {
     display: flex;
     align-items: center;
+}
+
+.header-left {
+    flex: 1;
+}
+
+.header-right {
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .header-left .logo-container,
@@ -84,13 +93,11 @@ header h1 {
     width: 32px;
     height: 32px;
     cursor: pointer;
-    display: flex;
-}
 }
 
 /* Toggle switch styles */
 .header-right .switch {
-    display: flex;
+    display: inline-block;
     width: 60px;
     height: 34px;
     position: relative;
@@ -228,6 +235,7 @@ input, button {
     width: auto;
     padding: 10px;
 }
+
 #myChart-container {
     width: 100%; /* Assure que le conteneur parent prend toute la largeur */
     height: auto;
