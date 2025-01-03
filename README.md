@@ -1,2 +1,2 @@
-# simple app at https://odysseu.github.io/python-app/
+# simple app on [> github-pages <](https://odysseu.github.io/python-app/)
 

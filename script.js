@@ -335,7 +335,7 @@ function telechargerPDF() {
         body: [
             ['Prix du bien', `${prix.toFixed(2)} €`],
             ['Frais de notaire', `${fraisNotaire.toFixed(2)} €`],
-            [`Taux d'appréciation`, `${tauxAppreciation.toFixed(2)} %`],
+            [`Taux d'appréciation`, `${(tauxAppreciation * 100).toFixed(2)} %`],
             [`Commission d'agence`, `${fraisCommission.toFixed(2)} €`],
             ['Total achat', `${totalAchat.toFixed(2)} €`]
         ],
@@ -346,11 +346,11 @@ function telechargerPDF() {
     doc.autoTable({
         head: [['Emprunt', 'Valeur']],
         body: [
-            ['Montant emprunté', `${montantEmprunte.toFixed(2)} €`],
+            ['Montant emprunté', `${montantEmprunte.toFixed(0)} €`],
             [`Taux d'intérêt`, `${(taux * 100).toFixed(2)} %`],
-            ['Mensualité', `${mensualite.toFixed(2)} €`],
-            ['Intérêts totaux', `${coutTotalInterets.toFixed(2)} €`],
-            ['Coût total emprunt', `${coutTotalEmprunt.toFixed(2)} €`]
+            ['Mensualité', `${mensualite.toFixed(0)} €`],
+            ['Intérêts totaux', `${coutTotalInterets.toFixed(0)} €`],
+            ['Coût total emprunt', `${coutTotalEmprunt.toFixed(0)} €`]
         ],
         startY: doc.previousAutoTable.finalY + 10
     });
@@ -359,10 +359,10 @@ function telechargerPDF() {
     doc.autoTable({
         head: [['Financement', 'Valeur']],
         body: [
-            ['Loyer fictif mensuel', `${loyerFictif.toFixed(2)} €`],
-            ['Taux d\'évolution du loyer fictif', `${tauxLoyerFictif.toFixed(2)} %`],
-            ['Taxe d\'habitation annuelle', `${taxeHabitation.toFixed(2)} €`],
-            ['Taxe foncière annuelle', `${taxeFonciere.toFixed(2)} €`]
+            ['Loyer fictif mensuel', `${loyerFictif.toFixed(0)} €`],
+            ['Taux d\'évolution du loyer fictif', `${(tauxLoyerFictif * 100).toFixed(2)} %`],
+            ['Taxe d\'habitation annuelle', `${taxeHabitation.toFixed(0)} €`],
+            ['Taxe foncière annuelle', `${taxeFonciere.toFixed(0)} €`]
         ],
         startY: doc.previousAutoTable.finalY + 10
     });
