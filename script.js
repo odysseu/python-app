@@ -115,7 +115,7 @@ function genererRapport() {
     const coutTotalEmprunt = mensualite * dureePret * 12;
     const coutTotalInterets = coutTotalEmprunt - montantEmprunte;
 
-    const cumulLoyers = extraireLoyers();
+    const cumulMensuelLoyers = extraireLoyers() / 12;
     const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers);
     const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
     const cumulLocation = calculPertesLocation(loyerFictif, maxDuree, tauxLoyerFictif);
@@ -193,11 +193,11 @@ function genererRapport() {
     `;
 
     // Ajouter les loyers au résultat
-    if (cumulLoyers > 0) {
+    if (cumulMensuelLoyers > 0) {
         resultat += `
                 <tr>
                     <td>Loyer mensuel moyen touché :</td>
-                    <td> style="text-align: right;">${cumulLoyers.toFixed(2) / 12} €</td>
+                    <td> style="text-align: right;">${cumulMensuelLoyers.toFixed(2)} €</td>
                 </tr>
         `;
     }
