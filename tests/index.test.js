@@ -8,19 +8,21 @@ require('@testing-library/jest-dom');
 const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
 
 let dom;
-let container;
+let htmlBody;
+let htmlHead;
 
 beforeEach(() => {
   dom = new JSDOM(html, { runScripts: 'dangerously' });
-  container = dom.window.document.body;
+  htmlBody = dom.window.document.body;
+  htmlHead = dom.window.document.head;
 });
 
 // Tests pour les identifiants utilisés dans dark-mode.js
 test('vérifie que les identifiants utilisés dans dark-mode.js existent', () => {
-  const toggleSwitch = container.querySelector('#dark-mode-toggle');
-  const homeLogo = container.querySelector('#home-logo');
-  const favicon = container.querySelector('#favicon');
-  const githubLogo = container.querySelector('#github-logo');
+  const toggleSwitch = htmlBody.querySelector('#dark-mode-toggle');
+  const homeLogo = htmlBody.querySelector('#home-logo');
+  const favicon = htmlHead.querySelector('#favicon');
+  const githubLogo = htmlBody.querySelector('#github-logo');
 
   expect(toggleSwitch).toBeInTheDocument();
   expect(homeLogo).toBeInTheDocument();
@@ -30,24 +32,24 @@ test('vérifie que les identifiants utilisés dans dark-mode.js existent', () =>
 
 // Tests pour les identifiants utilisés dans script.js
 test('vérifie que les identifiants utilisés dans script.js existent', () => {
-  const form = container.querySelector('#calculette-form');
-  const resultat = container.querySelector('#resultat');
-  const myChart = container.querySelector('#myChart');
-  const loyersContainer = container.querySelector('#loyers-container');
-  const prixInput = container.querySelector('#prix');
-  const notaireInput = container.querySelector('#notaire');
-  const tauxAppreciationInput = container.querySelector('#taux-appreciation');
-  const tauxLoyerFictifInput = container.querySelector('#taux-loyer-fictif');
-  const commissionInput = container.querySelector('#commission');
-  const apportInput = container.querySelector('#apport');
-  const tauxInput = container.querySelector('#taux');
-  const dureePretInput = container.querySelector('#duree-pret');
-  const loyerFictifInput = container.querySelector('#loyer-fictif');
-  const taxeHabitationInput = container.querySelector('#taxe-habitation');
-  const taxeFonciereInput = container.querySelector('#taxe-fonciere');
-  const calculerButton = container.querySelector('#calculer-button');
-  const telechargerButton = container.querySelector('#telecharger-button');
-  const rapportBouton = container.querySelector('#rapportBouton');
+  const form = htmlBody.querySelector('#calculette-form');
+  const resultat = htmlBody.querySelector('#resultat');
+  const myChart = htmlBody.querySelector('#myChart');
+  const loyersContainer = htmlBody.querySelector('#loyers-htmlBody');
+  const prixInput = htmlBody.querySelector('#prix');
+  const notaireInput = htmlBody.querySelector('#notaire');
+  const tauxAppreciationInput = htmlBody.querySelector('#taux-appreciation');
+  const tauxLoyerFictifInput = htmlBody.querySelector('#taux-loyer-fictif');
+  const commissionInput = htmlBody.querySelector('#commission');
+  const apportInput = htmlBody.querySelector('#apport');
+  const tauxInput = htmlBody.querySelector('#taux');
+  const dureePretInput = htmlBody.querySelector('#duree-pret');
+  const loyerFictifInput = htmlBody.querySelector('#loyer-fictif');
+  const taxeHabitationInput = htmlBody.querySelector('#taxe-habitation');
+  const taxeFonciereInput = htmlBody.querySelector('#taxe-fonciere');
+  const calculerButton = htmlBody.querySelector('#calculer-button');
+  const telechargerButton = htmlBody.querySelector('#telecharger-button');
+  const rapportBouton = htmlBody.querySelector('#rapportBouton');
 
   expect(form).toBeInTheDocument();
   expect(resultat).toBeInTheDocument();
