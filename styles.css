@@ -1,3 +1,13 @@
+.sticky-header {
+    position: -webkit-sticky; /* Pour les anciens navigateurs Safari */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white; /* Couleur de fond du header */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optionnel : ajout d'une ombre pour un effet visuel */
+    padding: 10px 0;
+}
+
 /* Header styles */
 header {
     display: flex;
@@ -5,13 +15,14 @@ header {
 }
 
 header .logo-container {
-    position: relative;
+    position: absolute;
     display: inline-block;
 }
 
-header .logo {
+header .header-logo {
     width: 50px;
     height: 50px;
+    position: absolute;
     margin-right: 15px;
     cursor: pointer;
 }
