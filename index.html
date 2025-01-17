@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculette Projet Immobilier</title>
-    <link rel="stylesheet" href="styles.css">
-    <link id="favicon" rel="icon" href="logos/favicon-light.ico" type="image/x-icon">
-</head>
-<body>
-    <header class="sticky-header">
-        <div class="header-left">
-            <div class="logo-container">
-                <img src="logos/home-logo-light.png" alt="Home Logo" class="header-logo" id="home-logo" onclick="resetForm()">
-                <span class="logo-help">Réinitialiser le formulaire</span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculette Projet Immobilier</title>
+        <link rel="stylesheet" href="styles.css">
+        <link id="favicon" rel="icon" href="logos/favicon-light.ico" type="image/x-icon">
+    </head>
+    <body>
+        <div id="welcome-message" class="welcome-message">
+            <p>Bienvenue!<br/><br/>Cet outil est une calculatrice d'investissement immobilier pour savoir quand il devient rentable d'acheter un bien plutôt que de le louer.</p>
+            <button id="close-welcome">Fermer</button>
+        </div>
+        <header class="sticky-header">
+            <div class="header-left">
+                <div class="logo-container">
+                    <img src="logos/home-logo-light.png" alt="Home Logo" class="header-logo" id="home-logo" onclick="resetForm()">
+                    <span class="logo-help">Réinitialiser le formulaire</span>
+                </div>
             </div>
-        </div>
-        <h1>Calculette Projet Immobilier</h1>
-        <div class="header-right">
-            <a href="https://github.com/odysseu/python-app" target="_blank">
-                <img src="logos/github-logo-light.png" alt="GitHub Logo" class="github-logo" id="github-logo">
-                <span class="logo-help">Aller au projet github</span>
-            </a>
-            <label class="switch">
-                <input type="checkbox" id="dark-mode-toggle">
-                <span class="slider round"></span>
-                <span class="switch-help">Changer de mode</span>
-            </label>
-        </div>
-    </header>
-    <div class="container">
-        <form id="calculette-form">
-            <div class="form-section">
-                <div>
+            <h1>Calculette Projet Immobilier</h1>
+            <div class="header-right">
+                <a href="https://github.com/odysseu/python-app" target="_blank">
+                    <img src="logos/github-logo-light.png" alt="GitHub Logo" class="github-logo" id="github-logo">
+                    <span class="logo-help">Aller au projet github</span>
+                </a>
+                <label class="switch">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <span class="slider round"></span>
+                    <span class="switch-help">Changer de mode</span>
+                </label>
+            </div>
+        </header>
+        <div class="container">
+            <form id="calculette-form">
+                <div class="form-section">
+                    <div>
                     <h2>Achat</h2>
                     <label for="prix">Prix du bien (€): <span class="help-icon">? <span class="help-text">Le prix d'achat du bien immobilier.</span></span></label>
                     <input type="number" id="prix" name="prix" value="300000" required>
@@ -92,6 +96,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
     <script src="dark-mode.js"></script>
+    <script src="welcome-message-handler.js"></script>
     <script>
         function resetForm() {
             document.getElementById('calculette-form').reset();

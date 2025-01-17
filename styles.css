@@ -1,10 +1,34 @@
+/* Color variables */
+:root {
+    --light-bg-color: #d1dbe0;
+    --light-text-color: #000000;
+    --dark-bg-color: #1e2a38;
+    --dark-text-color: #d1dbe0;
+    --primary-color: #2196F3;
+    --secondary-color: #555;
+    --welcome-message-light-bg-color: #aac3cf;
+    --welcome-message-dark-bg-color: #314050;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--light-bg-color);
+    color: var(--light-text-color);
+    overflow-x: hidden;
+}
+
+body.dark-mode {
+    background-color: var(--dark-bg-color);
+    color: var(--dark-text-color);
+}
+
 /* Header styles */
 .sticky-header {
     position: -webkit-sticky; /* Pour les anciens navigateurs Safari */
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: #d1dbe0; /* Couleur de fond du header */
+    background-color: var(--light-bg-color); /* Couleur de fond du header */
     box-shadow: 0 2px 5px #0c1116b4; /* Optionnel : ajout d'une ombre pour un effet visuel */
     padding: 10px 20px;
     display: flex;
@@ -13,8 +37,8 @@
 }
 
 body.dark-mode .sticky-header {
-    background-color: #1e2a38; /* Darker background for header */
-    color: #d1dbe0; /* Soft white text for header */
+    background-color: var(--dark-bg-color); /* Darker background for header */
+    color: var(--dark-text-color); /* Soft white text for header */
 }
 
 .header-left, .header-right {
@@ -49,7 +73,7 @@ body.dark-mode .sticky-header {
 .header-right .switch-help {
     visibility: hidden;
     width: 200px;
-    background-color: #555;
+    background-color: var(--secondary-color);
     color: #ffffff;
     text-align: center;
     border-radius: 6px;
@@ -70,7 +94,7 @@ body.dark-mode .sticky-header {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #555 transparent transparent transparent;
+    border-color: var(--secondary-color) transparent transparent transparent;
 }
 
 .header-left .logo-container:hover .logo-help,
@@ -132,23 +156,11 @@ header h1 {
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: var(--primary-color);
 }
 
 input:checked + .slider:before {
     transform: translateX(26px);
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    color: #000000; 
-    overflow-x: hidden;
-}
-
-body.dark-mode {
-    background-color: #1e2a38; /* Dark blue background */
-    color: #d1dbe0; /* Soft white text */
 }
 
 .container {
@@ -160,7 +172,7 @@ body.dark-mode {
 }
 
 body.dark-mode .container {
-    border-color: #1e2a38;
+    border-color: var(--dark-bg-color);
 }
 
 input, button {
@@ -179,7 +191,7 @@ input, button {
 .help-text {
     visibility: hidden;
     width: 200px;
-    background-color: #555;
+    background-color: var(--secondary-color);
     color: #fff;
     text-align: center;
     border-radius: 6px;
@@ -191,7 +203,6 @@ input, button {
     pointer-events: none; /* Prevent the tooltip from intercepting mouse events */
 }
 
-
 /* Help text arrow styles */
 .help-text::after {
     content: "";
@@ -201,20 +212,18 @@ input, button {
     transform: translateX(-50%);
     border-width: 5px;
     border-style: solid;
-    border-color: #555 transparent transparent transparent;
+    border-color: var(--secondary-color) transparent transparent transparent;
 }
 
 body.dark-mode .help-text {
-    background-color: #333;
-    border-color: #333;
+    background-color: var(--dark-bg-color);
+    border-color: var(--dark-bg-color);
 }
-
 
 .help-icon:hover .help-text {
     visibility: visible;
     opacity: 1;
 }
-
 
 /* Form section styles */
 .form-section {
@@ -263,6 +272,40 @@ body.dark-mode .help-text {
 
 body.dark-mode input, body.dark-mode button {
     background-color: #2a3b4d; /* Darker blue */
-    color: #d1dbe0; /* Soft white text */
+    color: var(--dark-text-color); /* Soft white text */
     border: 1px solid #444;
+}
+
+.welcome-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--welcome-message-light-bg-color);
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px #0000001a;
+    z-index: 1000;
+}
+
+body.dark-mode .welcome-message {
+    background-color: var(--welcome-message-dark-bg-color);
+    color: var(--dark-text-color);
+    border-color: var(--dark-bg-color);
+}
+
+.welcome-message p {
+    margin: 0 0 20px;
+}
+
+.welcome-message button {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+.welcome-message button:hover {
+    background-color: #0056b3;
 }
