@@ -1,32 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const welcomeMessage = document.getElementById('welcome-message');
-    const closeButton = document.getElementById('close-welcome');
-    const languageSelect = document.getElementById('language-select');
-
-    closeButton.addEventListener('click', function() {
-        welcomeMessage.style.display = 'none';
-    });
-
-    document.addEventListener('click', function(event) {
-        if (!welcomeMessage.contains(event.target) && event.target !== closeButton) {
-            welcomeMessage.style.display = 'none';
-        }
-    });
-
-    languageSelect.addEventListener('change', function() {
-        const selectedLanguage = languageSelect.value;
-        loadTranslations(selectedLanguage);
-    });
-
-    // Initial call to set the language based on the default selection
-    const defaultLanguage = languageSelect.value;
-    loadTranslations(defaultLanguage);
-
-    document.getElementById('calculer-button').addEventListener('click', genererRapport);
-});
 
 function loadTranslations(language) {
-    fetch(`translations_${language}.json`)
+    console.log("loading ", language)
+    fetch(`translations/${language}.json`)
         .then(response => response.json())
         .then(translations => {
             updateContent(translations);
@@ -37,6 +12,7 @@ function loadTranslations(language) {
 function updateContent(translations) {
     document.getElementById('welcome-message').querySelector('p').innerHTML = translations.welcomeMessage;
     document.getElementById('close-welcome').textContent = translations.closeButton;
+    document.getElementById('section-titre').textContent = translations.sectionTitle;
     document.getElementById('section-achat').textContent = translations.sectionAchat;
     document.getElementById('section-emprunt').textContent = translations.sectionEmprunt;
     document.getElementById('section-financement').textContent = translations.sectionFinancement;
@@ -56,4 +32,18 @@ function updateContent(translations) {
     document.querySelector('#telecharger-button button').textContent = translations.downloadPDF;
     document.getElementById('loyer-0').placeholder = translations.helpLoyerMensuel;
     document.getElementById('duree-location-0').placeholder = translations.helpDureeLocation;
+}
+
+function changeLanguage() {
+    const languageSelect = document.getElementById('language-select');
+    const selectedLanguage = languageSelect.value;
+    const elements = document.querySelectorAll('[data-fr], [data-en]');
+
+    elements.forEach(element => {
+        if (selectedLanguage === 'fr') {
+            element.textContent = element.getAttribute('data-fr');
+        } else if (selectedLanguage === 'en') {
+            element.textContent = element.getAttribute('data-en');
+        }
+    });
 }
