@@ -46,7 +46,7 @@ function extraireLoyers() {
     return cumulLoyers;
 }
 
-function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyer, tauxLoyerFictif, cumulLoyers) {
+function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers) {
     const coutInitial = prix + fraisNotaire + fraisCommission - apport;
     for (let t = 1; t <= duree; t++) {
         // achat
@@ -55,7 +55,7 @@ function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, appo
         const cumulTaxeFonciere = taxeFonciere * t;
         const pertesNettesAchat = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente - cumulLoyers;
         // location
-        const pertesNettesLocation = (loyer * Math.pow(1 + tauxLoyerFictif, t)) * 12 * t;
+        const pertesNettesLocation = (loyerFictif * Math.pow(1 + tauxLoyerFictif, t)) * 12 * t;
         if (pertesNettesLocation > pertesNettesAchat) {
             return t - 1; // Croisement des pertes
         }
@@ -66,7 +66,7 @@ function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, appo
 
 function calculerPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, cumulLoyers) {
     const pertesAchat = [];
-    const coutInitial = prix + fraisNotaire + fraisCommission + apport;
+    const coutInitial = prix + fraisNotaire + fraisCommission;
     for (let t = 1; t <= duree; t++) {
         const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
         const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;

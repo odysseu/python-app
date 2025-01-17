@@ -1,3 +1,5 @@
+let translations = {};
+
 document.addEventListener('DOMContentLoaded', function() {
     const welcomeMessage = document.getElementById('welcome-message');
     const closeButton = document.getElementById('close-welcome');
@@ -28,15 +30,17 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadTranslations(language) {
     fetch(`translations_${language}.json`)
         .then(response => response.json())
-        .then(translations => {
-            updateContent(translations);
+        .then(data => {
+            translations = data;
+            updateContent();
         })
         .catch(error => console.error('Error loading translations:', error));
 }
 
-function updateContent(translations) {
+function updateContent() {
     document.getElementById('welcome-message').querySelector('p').innerHTML = translations.welcomeMessage;
     document.getElementById('close-welcome').textContent = translations.closeButton;
+    document.getElementById('section-title').textContent = translations.sectionTitle;
     document.getElementById('section-achat').textContent = translations.sectionAchat;
     document.getElementById('section-emprunt').textContent = translations.sectionEmprunt;
     document.getElementById('section-financement').textContent = translations.sectionFinancement;
