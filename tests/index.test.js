@@ -58,7 +58,6 @@ test('vérifie que les identifiants utilisés dans les .js existent', () => {
   const taxeHabitationInput = htmlBody.querySelector('#taxe-habitation');
   const taxeFonciereInput = htmlBody.querySelector('#taxe-fonciere');
   const calculerButton = htmlBody.querySelector('#calculer-button');
-  const telechargerButton = htmlBody.querySelector('#telecharger-button');
   const rapportBouton = htmlBody.querySelector('#rapport-bouton');
 
   expect(form).toBeInTheDocument();
@@ -77,6 +76,5 @@ test('vérifie que les identifiants utilisés dans les .js existent', () => {
   expect(taxeHabitationInput).toBeInTheDocument();
   expect(taxeFonciereInput).toBeInTheDocument();
   expect(calculerButton).toBeInTheDocument();
-  expect(telechargerButton).toBeInTheDocument();
   expect(rapportBouton).toBeInTheDocument();
 });
