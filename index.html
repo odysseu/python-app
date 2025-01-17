@@ -1,95 +1,97 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Calculette Projet Immobilier</title>
-        <link rel="stylesheet" href="styles.css">
-        <link id="favicon" rel="icon" href="logos/favicon-light.ico" type="image/x-icon">
-    </head>
-    <body>
-        <div id="welcome-message" class="welcome-message">
-            <p>Bienvenue!<br/><br/>Cet outil est une calculatrice d'investissement immobilier pour savoir quand il devient rentable d'acheter un bien plutôt que de le louer.</p>
-            <button id="close-welcome">Fermer</button>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculette Projet Immobilier</title>
+    <link rel="stylesheet" href="styles.css">
+    <link id="favicon" rel="icon" href="logos/favicon-light.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div id="welcome-message" class="welcome-message">
+        <p>Bienvenue!<br /><br />Cet outil est une calculatrice d'investissement immobilier pour savoir quand il devient rentable d'acheter un bien plutôt que de le louer.</p>
+        <button id="close-welcome">Fermer</button>
+    </div>
+    <header class="sticky-header">
+        <div class="header-left">
+            <div class="logo-container">
+                <img src="logos/home-logo-light.png" alt="Home Logo" class="header-logo" id="home-logo" onclick="resetForm()">
+                <span class="logo-help">Réinitialiser le formulaire</span>
+            </div>
         </div>
-        <header class="sticky-header">
-            <div class="header-left">
-                <div class="logo-container">
-                    <img src="logos/home-logo-light.png" alt="Home Logo" class="header-logo" id="home-logo" onclick="resetForm()">
-                    <span class="logo-help">Réinitialiser le formulaire</span>
-                </div>
-            </div>
-            <h1>Calculette Projet Immobilier</h1>
-            <div class="header-right">
-                <a href="https://github.com/odysseu/python-app" target="_blank">
-                    <img src="logos/github-logo-light.png" alt="GitHub Logo" class="github-logo" id="github-logo">
-                    <span class="logo-help">Aller au projet github</span>
-                </a>
-                <label class="switch">
-                    <input type="checkbox" id="dark-mode-toggle">
-                    <span class="slider round"></span>
-                    <span class="switch-help">Changer de mode</span>
-                </label>
-            </div>
-        </header>
-        <div class="container">
-            <form id="calculette-form">
-                <div class="form-section">
-                    <div>
-                    <h2>Achat</h2>
-                    <label for="prix">Prix du bien (€): <span class="help-icon">? <span class="help-text">Le prix d'achat du bien immobilier.</span></span></label>
-                    <input type="number" id="prix" name="prix" value="300000" required>
-                    
-                    <label for="notaire">Frais de notaire (%): <span class="help-icon">? <span class="help-text">Pourcentage des frais de notaire applicables (4 pour du neuf, 8 pour de l'ancien).</span></span></label>
-                    <input type="number" step="0.01" id="notaire" name="notaire" value="8" required>
-                    
-                    <label for="taux-appreciation">Taux appréciation bien (%): <span class="help-icon">? <span class="help-text">Taux d'évolution annuel du prix du bien.</span></span></label>
-                    <input type="number" step="0.01" id="taux-appreciation" name="taux-appreciation" value="2" required>
-                    
-                    <label for="commission">Commission agence (%): <span class="help-icon">? <span class="help-text">Pourcentage des frais d'agence.</span></span></label>
-                    <input type="number" step="0.01" id="commission" name="commission" value="0" required>
-                </div>
+        <h1>Calculette Projet Immobilier</h1>
+        <div class="header-right">
+            <a href="https://github.com/odysseu/python-app" target="_blank">
+                <img src="logos/github-logo-light.png" alt="GitHub Logo" class="github-logo" id="github-logo">
+                <span class="logo-help">Aller au projet github</span>
+            </a>
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider round"></span>
+                <span class="switch-help">Changer de mode</span>
+            </label>
+        </div>
+    </header>
+    <div class="container">
+        <form id="calculette-form">
+            <div class="form-section">
                 <div>
-                    <h2>Emprunt</h2>
-                    <label for="apport">Apport personnel (€): <span class="help-icon">? <span class="help-text">Montant de l'apport personnel.</span></span></label>
-                    <input type="number" id="apport" name="apport" value="0" required>
-                    
-                    <label for="taux">Taux d'intérêt (%): <span class="help-icon">? <span class="help-text">Taux d'intérêt annuel du prêt immobilier.</span></span></label>
-                    <input type="number" step="0.01" id="taux" name="taux" value="1" required>
-                    
-                    <label for="duree-pret">Durée du prêt (années): <span class="help-icon">? <span class="help-text">Durée totale du prêt en années.</span></span></label>
-                    <input type="number" id="duree-pret" name="duree-pret" value="20" required>
-                </div>
+                <h2>Achat</h2>
+                <label for="prix">Prix du bien (€): <span class="help-icon">? <span class="help-text">Le prix d'achat du bien immobilier.</span></span></label>
+                <input type="number" id="prix" name="prix" value="300000" required>
+                
+                <label for="notaire">Frais de notaire (%): <span class="help-icon">? <span class="help-text">Pourcentage des frais de notaire applicables (4 pour du neuf, 8 pour de l'ancien).</span></span></label>
+                <input type="number" step="0.01" id="notaire" name="notaire" value="8" required>
+                
+                <label for="taux-appreciation">Taux appréciation bien (%): <span class="help-icon">? <span class="help-text">Taux d'évolution annuel du prix du bien.</span></span></label>
+                <input type="number" step="0.01" id="taux-appreciation" name="taux-appreciation" value="2" required>
+                
+                <label for="commission">Commission agence (%): <span class="help-icon">? <span class="help-text">Pourcentage des frais d'agence.</span></span></label>
+                <input type="number" step="0.01" id="commission" name="commission" value="0" required>
             </div>
-            <h2>Financement</h2>
-            <label for="loyer-fictif">Loyer fictif mensuel (€): <span class="help-icon">? <span class="help-text">Loyer mensuel que vous paieriez si vous louiez au lieu d'acheter.</span></span></label>
-            <input type="number" id="loyer-fictif" name="loyer-fictif" value="1000" required>
-                    
-            <label for="taux-loyer-fictif">Taux évolution loyer fictif annuel (%): <span class="help-icon">? <span class="help-text">Taux d'évolution du loyer fictif annuel si vous louiez au lieu d'acheter (%).</span></span></label>
-            <input type="number" step="0.01" id="taux-loyer-fictif" name="taux-loyer-fictif" value="1" required>
-            
-            <label for="taxe-habitation">Taxe d'habitation (€): <span class="help-icon">? <span class="help-text">Montant annuel de la taxe d'habitation.</span></span></label>
-            <input type="number" id="taxe-habitation" name="taxe-habitation" value="0" required>
-            
-            <label for="taxe-fonciere">Taxe foncière (€): <span class="help-icon">? <span class="help-text">Montant annuel de la taxe foncière.</span></span></label>
-            <input type="number" id="taxe-fonciere" name="taxe-fonciere" value="1000" required>
-            
-            <div id="loyers-container">
-                <div class="loyer-container">
-                    <input type="number" id="loyer-0" name="loyer-0" placeholder="Loyer mensuel (€)" required>
-                    <input type="number" step="0.01" id="duree-location-0" name="duree-location-0" placeholder="Durée (% de l'année)" required>
-                    <button type="button" onclick="ajouterLoyer()">+</button>
-                </div>
+            <div>
+                <h2>Emprunt</h2>
+                <label for="apport">Apport personnel (€): <span class="help-icon">? <span class="help-text">Montant de l'apport personnel.</span></span></label>
+                <input type="number" id="apport" name="apport" value="0" required>
+                
+                <label for="taux">Taux d'intérêt (%): <span class="help-icon">? <span class="help-text">Taux d'intérêt annuel du prêt immobilier.</span></span></label>
+                <input type="number" step="0.01" id="taux" name="taux" value="1" required>
+                
+                <label for="duree-pret">Durée du prêt (années): <span class="help-icon">? <span class="help-text">Durée totale du prêt en années.</span></span></label>
+                <input type="number" id="duree-pret" name="duree-pret" value="20" required>
             </div>
-            
+        </div>
+        <h2>Financement</h2>
+        <label for="loyer-fictif">Loyer fictif mensuel (€): <span class="help-icon">? <span class="help-text">Loyer mensuel que vous paieriez si vous louiez au lieu d'acheter.</span></span></label>
+        <input type="number" id="loyer-fictif" name="loyer-fictif" value="1000" required>
+                
+        <label for="taux-loyer-fictif">Taux évolution loyer fictif annuel (%): <span class="help-icon">? <span class="help-text">Taux d'évolution du loyer fictif annuel si vous louiez au lieu d'acheter (%).</span></span></label>
+        <input type="number" step="0.01" id="taux-loyer-fictif" name="taux-loyer-fictif" value="1" required>
+        
+        <label for="taxe-habitation">Taxe d'habitation (€): <span class="help-icon">? <span class="help-text">Montant annuel de la taxe d'habitation.</span></span></label>
+        <input type="number" id="taxe-habitation" name="taxe-habitation" value="0" required>
+        
+        <label for="taxe-fonciere">Taxe foncière (€): <span class="help-icon">? <span class="help-text">Montant annuel de la taxe foncière.</span></span></label>
+        <input type="number" id="taxe-fonciere" name="taxe-fonciere" value="1000" required>
+        
+        <div id="loyers-container">
+            <div class="loyer-container">
+                <input type="number" id="loyer-0" name="loyer-0" placeholder="Loyer mensuel (€)" required>
+                <input type="number" step="0.01" id="duree-location-0" name="duree-location-0" placeholder="Durée (% de l'année)" required>
+                <button type="button" onclick="ajouterLoyer()">+</button>
+            </div>
+        </div>
+        
             <button type="button" id="calculer-button" onclick="genererRapport()">Calculer</button>
         </form>
         <div id="resultat"></div>
         <div id="myChart-container">
             <canvas id="myChart"></canvas>
         </div>
-        <div id="rapportBouton"></div>
-        <div id="telecharger-button"></div>
+        <div id="rapport-bouton"></div>
+        <!-- <div id="telecharger-button"></div> -->
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
@@ -103,4 +105,5 @@
         }
     </script>
 </body>
+
 </html>

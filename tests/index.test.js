@@ -17,7 +17,17 @@ beforeEach(() => {
   htmlHead = dom.window.document.head;
 });
 
-// Tests pour les identifiants utilisés dans dark-mode.js
+
+// Tests que les identifiants utilisés dans welcome-message-handler.js existent dans le .html
+test('vérifie que les identifiants utilisés dans dark-mode.js existent', () => {
+  const welcomeMessage = htmlBody.querySelector('#welcome-message');
+  const closeWelcome = htmlBody.querySelector('#close-welcome');
+  
+  expect(welcomeMessage).toBeInTheDocument();
+  expect(closeWelcome).toBeInTheDocument();
+});
+
+// Tests que les identifiants utilisés dans dark-mode.js existent dans le .html
 test('vérifie que les identifiants utilisés dans dark-mode.js existent', () => {
   const toggleSwitch = htmlBody.querySelector('#dark-mode-toggle');
   const homeLogo = htmlBody.querySelector('#home-logo');
@@ -30,8 +40,8 @@ test('vérifie que les identifiants utilisés dans dark-mode.js existent', () =>
   expect(githubLogo).toBeInTheDocument();
 });
 
-// Tests pour les identifiants utilisés dans script.js
-test('vérifie que les identifiants utilisés dans script.js existent', () => {
+// Tests que les identifiants utilisés dans script.js existent dans le .html
+test('vérifie que les identifiants utilisés dans les .js existent', () => {
   const form = htmlBody.querySelector('#calculette-form');
   const resultat = htmlBody.querySelector('#resultat');
   const myChart = htmlBody.querySelector('#myChart');
@@ -49,7 +59,7 @@ test('vérifie que les identifiants utilisés dans script.js existent', () => {
   const taxeFonciereInput = htmlBody.querySelector('#taxe-fonciere');
   const calculerButton = htmlBody.querySelector('#calculer-button');
   const telechargerButton = htmlBody.querySelector('#telecharger-button');
-  const rapportBouton = htmlBody.querySelector('#rapportBouton');
+  const rapportBouton = htmlBody.querySelector('#rapport-bouton');
 
   expect(form).toBeInTheDocument();
   expect(resultat).toBeInTheDocument();

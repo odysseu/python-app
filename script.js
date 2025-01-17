@@ -118,7 +118,7 @@ function genererRapport() {
     const cumulMensuelLoyers = cumulLoyers / 12;
 
     const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers);
-    const maxDuree = Math.max(dureePret, anneeRemboursement) + 5; // 5 ans de plus pour voir les évolutions après amortissement
+    const maxDuree = Math.max(dureePret, anneeRemboursement) + 1; // 1 more year to see after meeting year
     const cumulLocation = calculPertesLocation(loyerFictif, maxDuree, tauxLoyerFictif);
     const cumulAchat = calculPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret, cumulLoyers);
 
@@ -218,10 +218,12 @@ function genererRapport() {
 
     const rapportBouton = 
         `
-        <button type="button" id="telecharger-button">Télécharger PDF</button>
+        <label for="pdf-filename">Nom du fichier PDF:</label>
+        <input type="text" id="pdf-filename" name="pdf-filename" placeholder="rapport-immobilier.pdf" required>
+        <button id="telecharger-button">Télécharger PDF</button>
         `;
 
-    document.getElementById('rapportBouton').innerHTML = rapportBouton;
+    document.getElementById('rapport-bouton').innerHTML = rapportBouton;
     
     // Attacher l'événement de téléchargement au bouton
     document.getElementById('telecharger-button').addEventListener('click', telechargerPDF);
@@ -372,8 +374,9 @@ function telechargerPDF() {
     const chartImage = chart.toDataURL('image/png');
     doc.addImage(chartImage, 'PNG', 15, 200, 180, 90);
 
-    doc.save('rapport-immobilier.pdf');
-
+    const pdfFilename = (document.getElementById('pdf-filename').value || 'rapport-immobilier')  + ".pdf";
+    doc.save(pdfFilename);
+    
     restaurerMode(wasDarkMode);
 }
 
