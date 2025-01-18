@@ -6,20 +6,42 @@ function resetForm() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     const languageSelect = document.getElementById('language-select');
     loadTranslations(languageSelect.value);
-    changeLanguage(); // Initial call to set the language based on the default selection
 }
 
 function ajouterLoyer() {
+    let loyerCount = document.querySelectorAll('.loyer-container').length;
     const container = document.getElementById('loyers-container');
-    const newLoyer = document.createElement('div');
-    newLoyer.className = 'loyer-container';
-    newLoyer.innerHTML = `
-        <input type="number" id="loyer-${loyerCount}" name="loyer-${loyerCount}" placeholder="Loyer mensuel (€)" required>
-        <input type="number" step="0.01" id="duree-location-${loyerCount}" name="duree-location-${loyerCount}" placeholder="Durée (% de l'année)" required>
+    // Get values from the first fields
+    const currentLoyerValue = container.querySelector('input[name="loyer-0"]').value.trim();
+    const currentDurationValue = container.querySelector('input[name="duree-location-0"]').value.trim();
+
+    let newLoyer;
+    if (isValidNumber(currentLoyerValue) && isValidNumber(currentDurationValue)) {
+        // If both are valid numbers, create the new inputs
+        newLoyer = document.createElement('div');
+        newLoyer.className = 'loyer-container';
+        newLoyer.innerHTML = `
+        <input type="number" id="loyer-${loyerCount}" name="loyer-${loyerCount}" value="${currentLoyerValue}" placeholder="Loyer mensuel (€)" required>
+        <input type="number" step="0.01" id="duree-location-${loyerCount}" name="duree-location-${loyerCount}" value="${currentDurationValue}" placeholder="Durée (% de l'année)" required>
         <button type="button" onclick="supprimerLoyer(this)">-</button>
     `;
-    container.appendChild(newLoyer);
-    loyerCount++;
+
+        container.appendChild(newLoyer);
+        loyerCount++;
+    } else {
+        // Handle the case where the input fields are empty or not valid numbers
+        // You can show a message to the user, or just not add the new fields
+        console.log("Invalid input. Please check the form.");
+    }
+    
+    // Reset the fields to ensure next inputs will be added in the form
+    container.querySelector('input[name="loyer-0"]').value = "";
+    container.querySelector('input[name="duree-location-0"]').value = "";
+    
+}
+
+function isValidNumber(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value) && value.trim() !== "";
 }
 
 function supprimerLoyer(button) {
@@ -42,7 +64,6 @@ function extraireLoyers() {
         let dureeLocation = parseFloat(container.querySelector('input[name^="duree-location"]').value) || 100;
         cumulLoyers += loyer * (dureeLocation / 100) * 12;
     });
-    console.log('Cumul annuel loyers: ', cumulLoyers);
     return cumulLoyers;
 }
 

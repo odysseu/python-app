@@ -1,13 +1,9 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const welcomeMessage = document.getElementById('welcome-message');
     const closeButton = document.getElementById('close-welcome');
     const languageSelect = document.getElementById('language-select');
+    console.log('message de event-handler.js');
     
-    // Initial call to set the language based on the default selection
-    const defaultLanguage = languageSelect.value;
-    loadTranslations(defaultLanguage);
-
     closeButton.addEventListener('click', function() {
         welcomeMessage.style.display = 'none';
     });
@@ -22,4 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedLanguage = languageSelect.value;
         loadTranslations(selectedLanguage);
     });
+    
+    // Initial call to set the language based on the default selection
+    const defaultLanguage = languageSelect.value;
+    loadTranslations(defaultLanguage);
+
 });

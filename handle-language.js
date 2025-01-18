@@ -1,49 +1,85 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const welcomeMessage = document.getElementById('welcome-message');
+    const closeButton = document.getElementById('close-welcome');
+    const languageSelect = document.getElementById('language-select');
+    console.log('Detected language :', languageSelect.value);
+
+    closeButton.addEventListener('click', function() {
+        welcomeMessage.style.display = 'none';
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!welcomeMessage.contains(event.target) && event.target !== closeButton) {
+            welcomeMessage.style.display = 'none';
+        }
+    });
+
+    languageSelect.addEventListener('change', function() {
+        const selectedLanguage = languageSelect.value;
+        loadTranslations(selectedLanguage);
+    });
+
+    // Initial call to set the language based on the default selection
+    const defaultLanguage = languageSelect.value;
+    loadTranslations(defaultLanguage);
+
+    document.getElementById('calculer-button').addEventListener('click', genererRapport);
+});
 
 function loadTranslations(language) {
-    console.log("loading ", language)
     fetch(`translations/${language}.json`)
         .then(response => response.json())
-        .then(translations => {
+        .then(data => {
+            translations = data;
             updateContent(translations);
         })
         .catch(error => console.error('Error loading translations:', error));
 }
 
 function updateContent(translations) {
-    document.getElementById('welcome-message').querySelector('p').innerHTML = translations.welcomeMessage;
-    document.getElementById('close-welcome').textContent = translations.closeButton;
-    document.getElementById('section-titre').textContent = translations.sectionTitle;
-    document.getElementById('section-achat').textContent = translations.sectionAchat;
-    document.getElementById('section-emprunt').textContent = translations.sectionEmprunt;
-    document.getElementById('section-financement').textContent = translations.sectionFinancement;
-    document.querySelector('label[for="prix"]').innerHTML = `${translations.prix} <span class="help-icon">? <span class="help-text">${translations.helpPrix}</span></span>`;
-    document.querySelector('label[for="notaire"]').innerHTML = `${translations.notaire} <span class="help-icon">? <span class="help-text">${translations.helpNotaire}</span></span>`;
-    document.querySelector('label[for="taux-appreciation"]').innerHTML = `${translations.tauxAppreciation} <span class="help-icon">? <span class="help-text">${translations.helpTauxAppreciation}</span></span>`;
-    document.querySelector('label[for="commission"]').innerHTML = `${translations.commission} <span class="help-icon">? <span class="help-text">${translations.helpCommission}</span></span>`;
-    document.querySelector('label[for="apport"]').innerHTML = `${translations.apport} <span class="help-icon">? <span class="help-text">${translations.helpApport}</span></span>`;
-    document.querySelector('label[for="taux"]').innerHTML = `${translations.taux} <span class="help-icon">? <span class="help-text">${translations.helpTaux}</span></span>`;
-    document.querySelector('label[for="duree-pret"]').innerHTML = `${translations.dureePret} <span class="help-icon">? <span class="help-text">${translations.helpDureePret}</span></span>`;
-    document.querySelector('label[for="loyer-fictif"]').innerHTML = `${translations.loyerFictif} <span class="help-icon">? <span class="help-text">${translations.helpLoyerFictif}</span></span>`;
-    document.querySelector('label[for="taux-loyer-fictif"]').innerHTML = `${translations.tauxLoyerFictif} <span class="help-icon">? <span class="help-text">${translations.helpTauxLoyerFictif}</span></span>`;
-    document.querySelector('label[for="taxe-habitation"]').innerHTML = `${translations.taxeHabitation} <span class="help-icon">? <span class="help-text">${translations.helpTaxeHabitation}</span></span>`;
-    document.querySelector('label[for="taxe-fonciere"]').innerHTML = `${translations.taxeFonciere} <span class="help-icon">? <span class="help-text">${translations.helpTaxeFonciere}</span></span>`;
-    document.getElementById('calculer-button').textContent = translations.generateReport;
-    document.querySelector('label[for="pdf-filename"]').textContent = translations.pdfFilename;
-    document.querySelector('#telecharger-button button').textContent = translations.downloadPDF;
-    document.getElementById('loyer-0').placeholder = translations.helpLoyerMensuel;
-    document.getElementById('duree-location-0').placeholder = translations.helpDureeLocation;
-}
+    if (translations) {
+        const welcomeMessage = document.getElementById('welcome-message');
+        const closeButton = document.getElementById('close-welcome');
+        const sectionAchat = document.getElementById('section-achat');
+        const sectionEmprunt = document.getElementById('section-emprunt');
+        const sectionFinancement = document.getElementById('section-financement');
+        const prixLabel = document.querySelector('label[for="prix"]');
+        const notaireLabel = document.querySelector('label[for="notaire"]');
+        const tauxAppreciationLabel = document.querySelector('label[for="taux-appreciation"]');
+        const commissionLabel = document.querySelector('label[for="commission"]');
+        const apportLabel = document.querySelector('label[for="apport"]');
+        const tauxLabel = document.querySelector('label[for="taux"]');
+        const dureePretLabel = document.querySelector('label[for="duree-pret"]');
+        const loyerFictifLabel = document.querySelector('label[for="loyer-fictif"]');
+        const tauxLoyerFictifLabel = document.querySelector('label[for="taux-loyer-fictif"]');
+        const taxeHabitationLabel = document.querySelector('label[for="taxe-habitation"]');
+        const taxeFonciereLabel = document.querySelector('label[for="taxe-fonciere"]');
+        const calculerButton = document.getElementById('calculer-button');
+        const pdfFilenameLabel = document.querySelector('label[for="pdf-filename"]');
+        const telechargerButton = document.querySelector('#telecharger-button button');
+        const loyer0 = document.getElementById('loyer-0');
+        const dureeLocation0 = document.getElementById('duree-location-0');
 
-function changeLanguage() {
-    const languageSelect = document.getElementById('language-select');
-    const selectedLanguage = languageSelect.value;
-    const elements = document.querySelectorAll('[data-fr], [data-en]');
-
-    elements.forEach(element => {
-        if (selectedLanguage === 'fr') {
-            element.textContent = element.getAttribute('data-fr');
-        } else if (selectedLanguage === 'en') {
-            element.textContent = element.getAttribute('data-en');
-        }
-    });
+        if (welcomeMessage) welcomeMessage.querySelector('p').innerHTML = translations.welcomeMessage;
+        if (closeButton) closeButton.textContent = translations.closeButton;
+        if (sectionAchat) sectionAchat.textContent = translations.sectionAchat;
+        if (sectionEmprunt) sectionEmprunt.textContent = translations.sectionEmprunt;
+        if (sectionFinancement) sectionFinancement.textContent = translations.sectionFinancement;
+        if (prixLabel) prixLabel.innerHTML = `${translations.prix} <span class="help-icon">? <span class="help-text">${translations.helpPrix}</span></span>`;
+        if (notaireLabel) notaireLabel.innerHTML = `${translations.notaire} <span class="help-icon">? <span class="help-text">${translations.helpNotaire}</span></span>`;
+        if (tauxAppreciationLabel) tauxAppreciationLabel.innerHTML = `${translations.tauxAppreciation} <span class="help-icon">? <span class="help-text">${translations.helpTauxAppreciation}</span></span>`;
+        if (commissionLabel) commissionLabel.innerHTML = `${translations.commission} <span class="help-icon">? <span class="help-text">${translations.helpCommission}</span></span>`;
+        if (apportLabel) apportLabel.innerHTML = `${translations.apport} <span class="help-icon">? <span class="help-text">${translations.helpApport}</span></span>`;
+        if (tauxLabel) tauxLabel.innerHTML = `${translations.taux} <span class="help-icon">? <span class="help-text">${translations.helpTaux}</span></span>`;
+        if (dureePretLabel) dureePretLabel.innerHTML = `${translations.dureePret} <span class="help-icon">? <span class="help-text">${translations.helpDureePret}</span></span>`;
+        if (loyerFictifLabel) loyerFictifLabel.innerHTML = `${translations.loyerFictif} <span class="help-icon">? <span class="help-text">${translations.helpLoyerFictif}</span></span>`;
+        if (tauxLoyerFictifLabel) tauxLoyerFictifLabel.innerHTML = `${translations.tauxLoyerFictif} <span class="help-icon">? <span class="help-text">${translations.helpTauxLoyerFictif}</span></span>`;
+        if (taxeHabitationLabel) taxeHabitationLabel.innerHTML = `${translations.taxeHabitation} <span class="help-icon">? <span class="help-text">${translations.helpTaxeHabitation}</span></span>`;
+        if (taxeFonciereLabel) taxeFonciereLabel.innerHTML = `${translations.taxeFonciere} <span class="help-icon">? <span class="help-text">${translations.helpTaxeFonciere}</span></span>`;
+        if (calculerButton) calculerButton.textContent = translations.generateReport;
+        if (pdfFilenameLabel) pdfFilenameLabel.textContent = translations.pdfFilename;
+        if (telechargerButton) telechargerButton.textContent = translations.downloadPDF;
+        if (loyer0) loyer0.placeholder = translations.helpLoyerMensuel;
+        if (dureeLocation0) dureeLocation0.placeholder = translations.helpDureeLocation;
+    }
 }
