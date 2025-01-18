@@ -130,7 +130,7 @@ function genererRapport() {
 
     const rapportBouton = `
         <label for="pdf-filename">${translations.pdfFilename}</label>
-        <input type="text" id="pdf-filename" name="pdf-filename" placeholder=${translations.pdfFilenamePlaceHolder} required>
+        <input type="text" id="pdf-filename" name="pdf-filename" placeholder="rapport-immobilier.pdf" required>
         <button id="telecharger-button">${translations.downloadPDF}</button>
     `;
 

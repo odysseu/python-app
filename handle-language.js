@@ -56,7 +56,7 @@ function updateContent(translations) {
         const taxeFonciereLabel = document.querySelector('label[for="taxe-fonciere"]');
         const calculerButton = document.getElementById('calculer-button');
         const pdfFilenameLabel = document.querySelector('label[for="pdf-filename"]');
-        const pdfFilenamePlaceHolderLabel = document.getElementById('pdf-filename').placeholder;
+        const pdfFilenamePlaceHolder = document.getElementById('placerholder["pdf-filename"]');
         const telechargerButton = document.querySelector('#telecharger-button button');
         const loyer0 = document.getElementById('loyer-0');
         const dureeLocation0 = document.getElementById('duree-location-0');
@@ -79,7 +79,7 @@ function updateContent(translations) {
         if (taxeFonciereLabel) taxeFonciereLabel.innerHTML = `${translations.taxeFonciere} <span class="help-icon">? <span class="help-text">${translations.helpTaxeFonciere}</span></span>`;
         if (calculerButton) calculerButton.textContent = translations.generateReport;
         if (pdfFilenameLabel) pdfFilenameLabel.textContent = translations.pdfFilename;
-        if (pdfFilenamePlaceHolderLabel) pdfFilenamePlaceHolderLabel.textContent = translations.pdfFilenamePlaceHolder;
+        if (pdfFilenamePlaceHolder) pdfFilenamePlaceHolder.placeholder = translations.pdfFilenamePlaceHolder;
         if (telechargerButton) telechargerButton.textContent = translations.downloadPDF;
         if (loyer0) loyer0.placeholder = translations.helpLoyerMensuel;
         if (dureeLocation0) dureeLocation0.placeholder = translations.helpDureeLocation;
