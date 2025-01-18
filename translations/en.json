@@ -18,6 +18,7 @@
     "taxeFonciere": "Property tax (€):",
     "generateReport": "Calculate",
     "pdfFilename": "PDF file name:",
+    "pdfFilenamePlaceHolder": "real-estate-simulation.pdf",
     "downloadPDF": "Download PDF Report",
     "helpPrix": "The purchase price of the real estate property.",
     "helpNotaire": "Percentage of applicable notary fees (4 for new, 8 for old).",

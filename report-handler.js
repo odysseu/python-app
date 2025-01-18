@@ -130,7 +130,7 @@ function genererRapport() {
 
     const rapportBouton = `
         <label for="pdf-filename">${translations.pdfFilename}</label>
-        <input type="text" id="pdf-filename" name="pdf-filename" placeholder="rapport-immobilier.pdf" required>
+        <input type="text" id="pdf-filename" name="pdf-filename" placeholder=${translations.pdfFilenamePlaceHolder} required>
         <button id="telecharger-button">${translations.downloadPDF}</button>
     `;
 
@@ -278,7 +278,7 @@ function telechargerPDF() {
     const chartImage = chart.toDataURL('image/png');
     doc.addImage(chartImage, 'PNG', 15, 200, 180, 90);
 
-    const pdfFilename = (document.getElementById('pdf-filename').value || 'rapport-immobilier') + ".pdf";
+    const pdfFilename = (document.getElementById('pdf-filename').value || translations.pdfFilenamePlaceHolderLabel) + ".pdf";
     doc.save(pdfFilename);
 
     restaurerMode(wasDarkMode);
