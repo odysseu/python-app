@@ -1,6 +1,8 @@
 {
+    "annee": "Year",
     "welcomeMessage": "Welcome!<br /><br />This tool is a real estate investment calculator to determine when it becomes profitable to buy a property rather than rent it.",
     "closeButton": "Close",
+    "Title": "Calculette Projet Immobilier",
     "sectionTitle": "Real Estate Project Calculator",
     "sectionAchat": "Purchase",
     "sectionEmprunt": "Loan",

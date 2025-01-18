@@ -1,6 +1,8 @@
 {
+    "annee": "Année",
     "welcomeMessage": "Bienvenue!<br /><br />Cet outil est une calculatrice d'investissement immobilier pour savoir quand il devient rentable d'acheter un bien plutôt que de le louer.",
     "closeButton": "Fermer",
+    "title": "Calculette Projet Immobilier",
     "sectionTitle": "Calculette Projet Immobilier",
     "sectionAchat": "Achat",
     "sectionEmprunt": "Emprunt",

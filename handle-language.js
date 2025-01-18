@@ -40,6 +40,8 @@ function updateContent(translations) {
     if (translations) {
         const welcomeMessage = document.getElementById('welcome-message');
         const closeButton = document.getElementById('close-welcome');
+        const title = document.getElementById('titre');
+        const sectionTitre = document.getElementById('section-titre');
         const sectionAchat = document.getElementById('section-achat');
         const sectionEmprunt = document.getElementById('section-emprunt');
         const sectionFinancement = document.getElementById('section-financement');
@@ -63,6 +65,8 @@ function updateContent(translations) {
 
         if (welcomeMessage) welcomeMessage.querySelector('p').innerHTML = translations.welcomeMessage;
         if (closeButton) closeButton.textContent = translations.closeButton;
+        if (sectionTitre) sectionTitre.textContent = translations.sectionTitle;
+        if (title) title.textContent = translations.title;
         if (sectionAchat) sectionAchat.textContent = translations.sectionAchat;
         if (sectionEmprunt) sectionEmprunt.textContent = translations.sectionEmprunt;
         if (sectionFinancement) sectionFinancement.textContent = translations.sectionFinancement;

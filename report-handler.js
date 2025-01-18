@@ -148,7 +148,7 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
 
     // 2. Obtenir l'élément canvas
     const ctx = document.getElementById('myChart').getContext('2d');
-    const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `Année ${i}`);
+    const labels = Array.from({ length: maxDuree + 1 }, (_, i) => `${translations.annee} ${i}`);
     // 3. Créer le nouveau graphique
     myChart = new Chart(ctx, {
         type: 'line',
