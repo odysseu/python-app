@@ -278,7 +278,7 @@ function telechargerPDF() {
     const chartImage = chart.toDataURL('image/png');
     doc.addImage(chartImage, 'PNG', 15, 200, 180, 90);
 
-    const pdfFilename = (document.getElementById('pdf-filename').value || translations.pdfFilenamePlaceHolderLabel) + ".pdf";
+    const pdfFilename = (document.getElementById('pdf-filename').value || translations.pdfFilenamePlaceHolder) + ".pdf";
     doc.save(pdfFilename);
 
     restaurerMode(wasDarkMode);
