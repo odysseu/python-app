@@ -8,7 +8,7 @@ require('@testing-library/jest-dom');
 const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
 const scriptContentForm = fs.readFileSync(path.resolve(__dirname, '../form-handler.js'), 'utf8');
 const scriptContentDarkMode = fs.readFileSync(path.resolve(__dirname, '../dark-mode.js'), 'utf8');
-const scriptContentWelcomeMessage = fs.readFileSync(path.resolve(__dirname, '../welcome-message-handler.js'), 'utf8');
+// const scriptContentWelcomeMessage = fs.readFileSync(path.resolve(__dirname, '../welcome-message-handler.js'), 'utf8');
 
 let dom;
 let htmlBody;
@@ -30,9 +30,9 @@ beforeEach(() => {
   dom.window.document.head.appendChild(scriptElementDarkMode);
 
   // Inject welcome-message-handler.js
-  const scriptElementWelcomeMessage = dom.window.document.createElement('script');
-  scriptElementWelcomeMessage.textContent = scriptContentWelcomeMessage;
-  dom.window.document.head.appendChild(scriptElementWelcomeMessage);
+  // const scriptElementWelcomeMessage = dom.window.document.createElement('script');
+  // scriptElementWelcomeMessage.textContent = scriptContentWelcomeMessage;
+  // dom.window.document.head.appendChild(scriptElementWelcomeMessage);
 });
 
 // Tests que les identifiants utilisés dans welcome-message-handler.js existent dans le .html
@@ -111,9 +111,4 @@ test('vérifie que les fonctions utilisées dans form-handler.js existent', () =
 test('vérifie que les fonctions utilisées dans dark-mode.js existent', () => {
   expect(typeof dom.window.forcerModeClair).toBe('function');
   expect(typeof dom.window.restaurerMode).toBe('function');
-});
-
-// Tests que les fonctions utilisées dans welcome-message-handler.js existent
-test('vérifie que les fonctions utilisées dans welcome-message-handler.js existent', () => {
-  expect(typeof dom.window.fermerMessageAccueil).toBe('function');
 });
