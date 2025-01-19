@@ -45,6 +45,8 @@ function updateContent(translations) {
         const sectionAchat = document.getElementById('section-achat');
         const sectionEmprunt = document.getElementById('section-emprunt');
         const sectionFinancement = document.getElementById('section-financement');
+        const coproprieteLabel = document.querySelector('label[for="copropriete"]');
+        console.log("coproprieteLabel:", coproprieteLabel)
         const prixLabel = document.querySelector('label[for="prix"]');
         const notaireLabel = document.querySelector('label[for="notaire"]');
         const tauxAppreciationLabel = document.querySelector('label[for="taux-appreciation"]');
@@ -70,6 +72,7 @@ function updateContent(translations) {
         if (sectionAchat) sectionAchat.textContent = translations.sectionAchat;
         if (sectionEmprunt) sectionEmprunt.textContent = translations.sectionEmprunt;
         if (sectionFinancement) sectionFinancement.textContent = translations.sectionFinancement;
+        if (coproprieteLabel) coproprieteLabel.innerHTML = `${translations.copropriete} <span class="help-icon">? <span class="help-text">${translations.helpCopropriete}</span></span>`;
         if (prixLabel) prixLabel.innerHTML = `${translations.prix} <span class="help-icon">? <span class="help-text">${translations.helpPrix}</span></span>`;
         if (notaireLabel) notaireLabel.innerHTML = `${translations.notaire} <span class="help-icon">? <span class="help-text">${translations.helpNotaire}</span></span>`;
         if (tauxAppreciationLabel) tauxAppreciationLabel.innerHTML = `${translations.tauxAppreciation} <span class="help-icon">? <span class="help-text">${translations.helpTauxAppreciation}</span></span>`;

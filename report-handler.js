@@ -13,6 +13,7 @@ function genererRapport() {
     const taxeHabitation = parseFloat(document.getElementById('taxe-habitation').value);
     const taxeFonciere = parseFloat(document.getElementById('taxe-fonciere').value);
     const tauxLoyerFictif = parseFloat(document.getElementById('taux-loyer-fictif').value) / 100;
+    const fraisCopropriete = parseFloat(document.getElementById('copropriete').value);
     const dureeMax = 500;
 
     const fraisNotaire = prix * notaire;
@@ -25,10 +26,10 @@ function genererRapport() {
     const cumulLoyers = extraireLoyers();
     const cumulMensuelLoyers = cumulLoyers / 12;
 
-    const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers);
+    const anneeRemboursement = trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, dureeMax, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers, fraisCopropriete);
     const maxDuree = Math.max(dureePret, anneeRemboursement) + 1; // 1 more year to see after meeting year
     const cumulLocation = calculerPertesLocation(loyerFictif, maxDuree, tauxLoyerFictif);
-    const cumulAchat = calculerPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret, cumulLoyers);
+    const cumulAchat = calculerPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, maxDuree, dureePret, cumulLoyers, fraisCopropriete);
 
     // Concaténer les résultats et le graphique
     let resultat = `
@@ -56,6 +57,10 @@ function genererRapport() {
                 <tr>
                     <td>${translations.reportTotalAchat}:</td>
                     <td style="text-align: right;">${totalAchat.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>${translations.copropriete}:</td>
+                    <td style="text-align: right;">${fraisCoproriete.toFixed(2)} €</td>
                 </tr>
             </table>
         </div>
@@ -202,6 +207,7 @@ function telechargerPDF() {
 
     const prix = parseFloat(document.getElementById('prix').value);
     const notaire = parseFloat(document.getElementById('notaire').value) / 100;
+    const copropriete = parseFloat(document.getElementById('copropriete').value);
     const tauxAppreciation = parseFloat(document.getElementById('taux-appreciation').value) / 100;
     const tauxLoyerFictif = parseFloat(document.getElementById('taux-loyer-fictif').value) / 100;
     const commission = parseFloat(document.getElementById('commission').value) / 100;
@@ -228,7 +234,8 @@ function telechargerPDF() {
             [`${translations.reportFraisNotaire}`, `${fraisNotaire.toFixed(2)} €`],
             [`${translations.reportTauxAppreciation}`, `${(tauxAppreciation * 100).toFixed(2)} %`],
             [`${translations.reportCommission}`, `${fraisCommission.toFixed(2)} €`],
-            [`${translations.reportTotalAchat}`, `${totalAchat.toFixed(2)} €`]
+            [`${translations.reportTotalAchat}`, `${totalAchat.toFixed(2)} €`],
+            [`${translations.copropriete}`, `${copropriete.toFixed(2)} €`]
         ],
         startY: 20
     });

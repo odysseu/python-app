@@ -67,11 +67,11 @@ test('vérifie que les éléments du DOM sont utilisés correctement', () => {
 
   // Test trouverAnneePertesInferieures function
   // trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers)
-  const anneePertes = dom.window.trouverAnneePertesInferieures(200000, (8/100)*200000, 0, 5000, 1000, 1000, 0.02, 30, 20, 1100, 0.01, 0);
+  const anneePertes = dom.window.trouverAnneePertesInferieures(200000, (8/100)*200000, 0, 5000, 1000, 1000, 0.02, 30, 20, 1100, 0.01, 0, 0);
   expect(anneePertes).toBeGreaterThanOrEqual(2);
 
   // Test calculerPertesAchat function
-  const pertesAchat = dom.window.calculerPertesAchat(200000, 10000, 5000, 50000, 1000, 1000, 0.02, 30, 20, cumulLoyers);
+  const pertesAchat = dom.window.calculerPertesAchat(200000, 10000, 5000, 50000, 1000, 1000, 0.02, 30, 20, cumulLoyers, 0);
   expect(pertesAchat.length).toBe(30);
 
   // Test calculerPertesLocation function

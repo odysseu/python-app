@@ -29,10 +29,6 @@ beforeEach(() => {
   scriptElementDarkMode.textContent = scriptContentDarkMode;
   dom.window.document.head.appendChild(scriptElementDarkMode);
 
-  // Inject welcome-message-handler.js
-  // const scriptElementWelcomeMessage = dom.window.document.createElement('script');
-  // scriptElementWelcomeMessage.textContent = scriptContentWelcomeMessage;
-  // dom.window.document.head.appendChild(scriptElementWelcomeMessage);
 });
 
 // Tests que les identifiants utilisés dans welcome-message-handler.js existent dans le .html
@@ -65,6 +61,7 @@ test('vérifie que les identifiants utilisés dans form-handler.js existent', ()
   const loyersContainer = htmlBody.querySelector('#loyers-container');
   const prixInput = htmlBody.querySelector('#prix');
   const notaireInput = htmlBody.querySelector('#notaire');
+  const coproprieteInput = htmlBody.querySelector('#copropriete');
   const tauxAppreciationInput = htmlBody.querySelector('#taux-appreciation');
   const tauxLoyerFictifInput = htmlBody.querySelector('#taux-loyer-fictif');
   const commissionInput = htmlBody.querySelector('#commission');
@@ -83,6 +80,7 @@ test('vérifie que les identifiants utilisés dans form-handler.js existent', ()
   expect(loyersContainer).toBeInTheDocument();
   expect(prixInput).toBeInTheDocument();
   expect(notaireInput).toBeInTheDocument();
+  expect(coproprieteInput).toBeInTheDocument();
   expect(tauxAppreciationInput).toBeInTheDocument();
   expect(tauxLoyerFictifInput).toBeInTheDocument();
   expect(commissionInput).toBeInTheDocument();

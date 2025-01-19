@@ -67,14 +67,15 @@ function extraireLoyers() {
     return cumulLoyers;
 }
 
-function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers) {
+function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, loyerFictif, tauxLoyerFictif, cumulLoyers, fraisCoproriete) {
     const coutInitial = prix + fraisNotaire + fraisCommission - apport;
     for (let t = 1; t <= duree; t++) {
         // achat
         const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
         const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;
         const cumulTaxeFonciere = taxeFonciere * t;
-        const pertesNettesAchat = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente - cumulLoyers;
+        const cumulFraisCoproriete = fraisCoproriete * t;
+        const pertesNettesAchat = coutInitial + cumulMensualites + cumulTaxeFonciere + cumulFraisCoproriete - valeurRevente - cumulLoyers;
         // location
         const pertesNettesLocation = (loyerFictif * Math.pow(1 + tauxLoyerFictif, t)) * 12 * t;
         if (pertesNettesLocation > pertesNettesAchat) {
@@ -85,14 +86,15 @@ function trouverAnneePertesInferieures(prix, fraisNotaire, fraisCommission, appo
     return duree; // Pas de croisement des pertes
 }
 
-function calculerPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, cumulLoyers) {
+function calculerPertesAchat(prix, fraisNotaire, fraisCommission, apport, mensualite, taxeFonciere, tauxAppreciation, duree, dureePret, cumulLoyers, fraisCoproriete) {
     const pertesAchat = [];
     const coutInitial = prix + fraisNotaire + fraisCommission;
     for (let t = 1; t <= duree; t++) {
         const valeurRevente = prix * Math.pow(1 + tauxAppreciation, t);
         const cumulMensualites = t <= dureePret ? mensualite * 12 * t : mensualite * 12 * dureePret;
         const cumulTaxeFonciere = taxeFonciere * t;
-        const pertesNettesAchat = coutInitial + cumulMensualites + cumulTaxeFonciere - valeurRevente - cumulLoyers;
+        const cumulFraisCoproriete = fraisCoproriete * t;
+        const pertesNettesAchat = coutInitial + cumulMensualites + cumulTaxeFonciere + cumulFraisCoproriete - valeurRevente - cumulLoyers;
         pertesAchat.push(pertesNettesAchat);
     }
 
