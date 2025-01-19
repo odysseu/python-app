@@ -40,7 +40,7 @@ test('vérifie que les identifiants utilisés dans dark-mode.js existent', () =>
   expect(githubLogo).toBeInTheDocument();
 });
 
-// Tests que les identifiants utilisés dans script.js existent dans le .html
+// Tests que les identifiants utilisés dans event-handler.js existent dans le .html
 test('vérifie que les identifiants utilisés dans les .js existent', () => {
   const form = htmlBody.querySelector('#calculette-form');
   const resultat = htmlBody.querySelector('#resultat');
