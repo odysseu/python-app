@@ -46,7 +46,6 @@ function updateContent(translations) {
         const sectionEmprunt = document.getElementById('section-emprunt');
         const sectionFinancement = document.getElementById('section-financement');
         const coproprieteLabel = document.querySelector('label[for="copropriete"]');
-        console.log("coproprieteLabel:", coproprieteLabel)
         const prixLabel = document.querySelector('label[for="prix"]');
         const notaireLabel = document.querySelector('label[for="notaire"]');
         const tauxAppreciationLabel = document.querySelector('label[for="taux-appreciation"]');
