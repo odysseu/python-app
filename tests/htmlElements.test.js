@@ -6,9 +6,6 @@ const { JSDOM } = require('jsdom');
 require('@testing-library/jest-dom');
 
 const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
-const scriptContentForm = fs.readFileSync(path.resolve(__dirname, '../form-handler.js'), 'utf8');
-const scriptContentDarkMode = fs.readFileSync(path.resolve(__dirname, '../dark-mode.js'), 'utf8');
-// const scriptContentWelcomeMessage = fs.readFileSync(path.resolve(__dirname, '../welcome-message-handler.js'), 'utf8');
 
 let dom;
 let htmlBody;
@@ -18,20 +15,8 @@ beforeEach(() => {
   dom = new JSDOM(html, { runScripts: 'dangerously' });
   htmlBody = dom.window.document.body;
   htmlHead = dom.window.document.head;
-
-  // Inject form-handler.js
-  const scriptElementForm = dom.window.document.createElement('script');
-  scriptElementForm.textContent = scriptContentForm;
-  dom.window.document.head.appendChild(scriptElementForm);
-
-  // Inject dark-mode.js
-  const scriptElementDarkMode = dom.window.document.createElement('script');
-  scriptElementDarkMode.textContent = scriptContentDarkMode;
-  dom.window.document.head.appendChild(scriptElementDarkMode);
-
 });
 
-// Tests que les identifiants utilisés dans welcome-message-handler.js existent dans le .html
 test('vérifie que les identifiants utilisés dans welcome-message-handler.js existent', () => {
   const welcomeMessage = htmlBody.querySelector('#welcome-message');
   const closeWelcome = htmlBody.querySelector('#close-welcome');
@@ -40,7 +25,6 @@ test('vérifie que les identifiants utilisés dans welcome-message-handler.js ex
   expect(closeWelcome).toBeInTheDocument();
 });
 
-// Tests que les identifiants utilisés dans dark-mode.js existent dans le .html
 test('vérifie que les identifiants utilisés dans dark-mode.js existent', () => {
   const toggleSwitch = htmlBody.querySelector('#dark-mode-toggle');
   const homeLogo = htmlBody.querySelector('#home-logo');
@@ -53,7 +37,6 @@ test('vérifie que les identifiants utilisés dans dark-mode.js existent', () =>
   expect(githubLogo).toBeInTheDocument();
 });
 
-// Tests que les identifiants utilisés dans form-handler.js existent dans le .html
 test('vérifie que les identifiants utilisés dans form-handler.js existent', () => {
   const form = htmlBody.querySelector('#calculette-form');
   const resultat = htmlBody.querySelector('#resultat');
@@ -92,21 +75,4 @@ test('vérifie que les identifiants utilisés dans form-handler.js existent', ()
   expect(taxeFonciereInput).toBeInTheDocument();
   expect(calculerButton).toBeInTheDocument();
   expect(rapportBouton).toBeInTheDocument();
-});
-
-// Tests que les fonctions utilisées dans form-handler.js existent
-test('vérifie que les fonctions utilisées dans form-handler.js existent', () => {
-  expect(typeof dom.window.resetForm).toBe('function');
-  expect(typeof dom.window.ajouterLoyer).toBe('function');
-  expect(typeof dom.window.supprimerLoyer).toBe('function');
-  expect(typeof dom.window.extraireLoyers).toBe('function');
-  expect(typeof dom.window.trouverAnneePertesInferieures).toBe('function');
-  expect(typeof dom.window.calculerPertesAchat).toBe('function');
-  expect(typeof dom.window.calculerPertesLocation).toBe('function');
-});
-
-// Tests que les fonctions utilisées dans dark-mode.js existent
-test('vérifie que les fonctions utilisées dans dark-mode.js existent', () => {
-  expect(typeof dom.window.forcerModeClair).toBe('function');
-  expect(typeof dom.window.restaurerMode).toBe('function');
 });

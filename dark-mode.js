@@ -35,3 +35,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
+function forcerModeClair() {
+    const body = document.body;
+    const wasDarkMode = body.classList.contains('dark-mode');
+    if (wasDarkMode) {
+        body.classList.remove('dark-mode');
+    }
+    return wasDarkMode;
+}
+
+function restaurerMode(wasDarkMode) {
+    if (wasDarkMode) {
+        document.body.classList.add('dark-mode');
+    }
+}
