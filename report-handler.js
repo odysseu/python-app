@@ -60,7 +60,7 @@ function genererRapport() {
                 </tr>
                 <tr>
                     <td>${translations.copropriete}:</td>
-                    <td style="text-align: right;">${fraisCoproriete.toFixed(2)} €</td>
+                    <td style="text-align: right;">${fraisCopropriete.toFixed(2)} €</td>
                 </tr>
             </table>
         </div>
