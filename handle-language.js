@@ -53,6 +53,7 @@ function updateContent(translations) {
         const apportLabel = document.querySelector('label[for="apport"]');
         const tauxLabel = document.querySelector('label[for="taux"]');
         const dureePretLabel = document.querySelector('label[for="duree-pret"]');
+        const tauxAssuranceLabel = document.querySelector('label[for="taux-assurance"]');
         const loyerFictifLabel = document.querySelector('label[for="loyer-fictif"]');
         const tauxLoyerFictifLabel = document.querySelector('label[for="taux-loyer-fictif"]');
         const taxeHabitationLabel = document.querySelector('label[for="taxe-habitation"]');
@@ -79,6 +80,7 @@ function updateContent(translations) {
         if (apportLabel) apportLabel.innerHTML = `${translations.apport} <span class="help-icon">? <span class="help-text">${translations.helpApport}</span></span>`;
         if (tauxLabel) tauxLabel.innerHTML = `${translations.taux} <span class="help-icon">? <span class="help-text">${translations.helpTaux}</span></span>`;
         if (dureePretLabel) dureePretLabel.innerHTML = `${translations.dureePret} <span class="help-icon">? <span class="help-text">${translations.helpDureePret}</span></span>`;
+        if (tauxAssuranceLabel) tauxAssuranceLabel.innerHTML = `${translations.tauxAssuranceLabel} <span class="help-icon">? <span class="help-text">${translations.helpTauxAssuranceLabel}</span></span>`;
         if (loyerFictifLabel) loyerFictifLabel.innerHTML = `${translations.loyerFictif} <span class="help-icon">? <span class="help-text">${translations.helpLoyerFictif}</span></span>`;
         if (tauxLoyerFictifLabel) tauxLoyerFictifLabel.innerHTML = `${translations.tauxLoyerFictif} <span class="help-icon">? <span class="help-text">${translations.helpTauxLoyerFictif}</span></span>`;
         if (taxeHabitationLabel) taxeHabitationLabel.innerHTML = `${translations.taxeHabitation} <span class="help-icon">? <span class="help-text">${translations.helpTaxeHabitation}</span></span>`;

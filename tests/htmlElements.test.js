@@ -51,6 +51,7 @@ test('vérifie que les identifiants utilisés dans form-handler.js existent', ()
   const apportInput = htmlBody.querySelector('#apport');
   const tauxInput = htmlBody.querySelector('#taux');
   const dureePretInput = htmlBody.querySelector('#duree-pret');
+  const tauxAssuranceInput = htmlBody.querySelector('#taux-assurance');
   const loyerFictifInput = htmlBody.querySelector('#loyer-fictif');
   const taxeHabitationInput = htmlBody.querySelector('#taxe-habitation');
   const taxeFonciereInput = htmlBody.querySelector('#taxe-fonciere');
@@ -70,6 +71,7 @@ test('vérifie que les identifiants utilisés dans form-handler.js existent', ()
   expect(apportInput).toBeInTheDocument();
   expect(tauxInput).toBeInTheDocument();
   expect(dureePretInput).toBeInTheDocument();
+  expect(tauxAssuranceInput).toBeInTheDocument();
   expect(loyerFictifInput).toBeInTheDocument();
   expect(taxeHabitationInput).toBeInTheDocument();
   expect(taxeFonciereInput).toBeInTheDocument();

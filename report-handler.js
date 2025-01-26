@@ -9,6 +9,7 @@ function genererRapport() {
     const apport = parseFloat(document.getElementById('apport').value);
     const taux = parseFloat(document.getElementById('taux').value) / 100;
     const dureePret = parseInt(document.getElementById('duree-pret').value);
+    const tauxAssurance = parseInt(document.getElementById('taux-assurance').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
     const taxeHabitation = parseFloat(document.getElementById('taxe-habitation').value);
     const taxeFonciere = parseFloat(document.getElementById('taxe-fonciere').value);
@@ -70,6 +71,10 @@ function genererRapport() {
                 <tr>
                     <td>${translations.reportMontantEmprunte}:</td>
                     <td style="text-align: right;">${montantEmprunte.toFixed(2)} €</td>
+                </tr>
+                <tr>
+                    <td>${translations.tauxAssurance}:</td>
+                    <td style="text-align: right;">${(taux * 100).toFixed(2)} %</td>
                 </tr>
                 <tr>
                     <td>${translations.reportTauxInteret}:</td>
@@ -214,6 +219,7 @@ function telechargerPDF() {
     const apport = parseFloat(document.getElementById('apport').value);
     const taux = parseFloat(document.getElementById('taux').value) / 100;
     const dureePret = parseInt(document.getElementById('duree-pret').value);
+    const tauxAssurance = parseInt(document.getElementById('taux-assurance').value);
     const loyerFictif = parseFloat(document.getElementById('loyer-fictif').value);
     const taxeHabitation = parseFloat(document.getElementById('taxe-habitation').value);
     const taxeFonciere = parseFloat(document.getElementById('taxe-fonciere').value);
@@ -246,6 +252,7 @@ function telechargerPDF() {
         body: [
             [`${translations.reportMontantEmprunte}`, `${montantEmprunte.toFixed(0)} €`],
             [`${translations.reportTauxInteret}`, `${(taux * 100).toFixed(2)} %`],
+            [`${translations.tauxAssurance}`, `${(tauxAssurance * 100).toFixed(2)} %`],
             [`${translations.reportMensualite}`, `${mensualite.toFixed(0)} €`],
             [`${translations.reportInteretsTotaux}`, `${coutTotalInterets.toFixed(0)} €`],
             [`${translations.reportCoutTotalEmprunt}`, `${coutTotalEmprunt.toFixed(0)} €`]
