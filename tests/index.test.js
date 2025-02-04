@@ -53,7 +53,7 @@ test('vérifie que les identifiants utilisés dans les .js existent', () => {
   const tauxLoyerFictifInput = htmlBody.querySelector('#taux-loyer-fictif');
   const commissionInput = htmlBody.querySelector('#commission');
   const apportInput = htmlBody.querySelector('#apport');
-  const tauxInput = htmlBody.querySelector('#taux');
+  const tauxInteretInput = htmlBody.querySelector('#taux-interet');
   const dureePretInput = htmlBody.querySelector('#duree-pret');
   const tauxAssuranceInput = htmlBody.querySelector('#taux-assurance');
   const loyerFictifInput = htmlBody.querySelector('#loyer-fictif');
@@ -73,7 +73,7 @@ test('vérifie que les identifiants utilisés dans les .js existent', () => {
   expect(tauxLoyerFictifInput).toBeInTheDocument();
   expect(commissionInput).toBeInTheDocument();
   expect(apportInput).toBeInTheDocument();
-  expect(tauxInput).toBeInTheDocument();
+  expect(tauxInteretInput).toBeInTheDocument();
   expect(dureePretInput).toBeInTheDocument();
   expect(tauxAssuranceInput).toBeInTheDocument();
   expect(loyerFictifInput).toBeInTheDocument();
