@@ -164,21 +164,55 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
                     label: `${translations.reportCumulDepensesLocation}`,
                     data: cumulLocation,
                     borderColor: 'rgb(255, 99, 132)',
-                    fill: false
+                    fill: false,
+                    borderWidth: 2, // Default border width
+                    pointRadius: 4, // Default point radius
+                    pointBorderWidth: 1, // Default point border width
+                    pointHoverRadius: 6, // Default point hover radius
+                    pointHoverBorderWidth: 2, // Default point hover border width
+                    tension: 0.4 // Default tension for curves
                 },
                 {
                     label: `${translations.reportCumulDepensesAchat}`,
                     data: cumulAchat,
                     borderColor: 'rgb(54, 162, 235)',
-                    fill: false
+                    fill: false,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 6,
+                    pointHoverBorderWidth: 2,
+                    tension: 0.4
                 }
             ]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: true, // Default aspect ratio maintenance
             devicePixelRatio: 2,
+            interaction: {
+                mode: 'index', // Default interaction mode
+                intersect: false // Default intersect setting
+            },
             scales: {
+                x: {
+                    beginAtZero: true, // Default start at zero
+                    title: {
+                        display: true,
+                        text: `${translations.annee}`
+                    },
+                    ticks: {
+                        autoSkip: true, // Default auto skip
+                        maxRotation: 0, // Default max rotation
+                        minRotation: 0 // Default min rotation
+                    }
+                },
                 y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: `${translations.reportPrix}`
+                    },
                     ticks: {
                         callback: function(value) {
                             return value.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
@@ -189,7 +223,43 @@ function genererGraphique(cumulLocation, cumulAchat, maxDuree) {
             plugins: {
                 title: {
                     display: true,
-                    text: `${translations.reportTitle}`
+                    text: `${translations.reportTitle}`,
+                    font: {
+                        size: 16 // Default font size
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 30
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'top', // Default legend position
+                    align: 'center', // Default legend alignment
+                    labels: {
+                        boxWidth: 40, // Default box width
+                        padding: 10, // Default padding
+                        font: {
+                            size: 12 // Default font size
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true, // Default tooltip enabled
+                    mode: 'index', // Default tooltip mode
+                    intersect: false, // Default intersect setting
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+                            }
+                            return label;
+                        }
+                    }
                 }
             }
         }
@@ -237,7 +307,38 @@ function telechargerPDF() {
             [`${translations.reportTotalAchat}`, `${totalAchat.toFixed(2)} €`],
             [`${translations.copropriete}`, `${copropriete.toFixed(2)} €`]
         ],
-        startY: 20
+        startY: 20,
+        margin: { left: 20, top: 10, right: 20, bottom: 10 }, // Default margin
+        theme: 'striped', // Default theme
+        styles: {
+            fontSize: 12, // Default font size
+            cellPadding: 4, // Default cell padding
+            overflow: 'linebreak', // Default overflow handling
+            halign: 'left', // Default horizontal alignment
+            valign: 'top', // Default vertical alignment
+            fillColor: false, // Default background color
+            textColor: 20, // Default text color
+            lineColor: 200, // Default line color
+            lineWidth: 0.2 // Default line width
+        },
+        headStyles: {}, // Custom styles for the header
+        bodyStyles: {}, // Custom styles for the body
+        footStyles: {}, // Custom styles for the footer
+        columnStyles: {}, // Custom styles for individual columns
+        alternateRowStyles: {}, // Custom styles for alternating rows
+        didDrawCell: () => {}, // Hook after drawing a cell
+        didDrawPage: () => {}, // Hook after drawing a page
+        willDrawCell: () => {}, // Hook before drawing a cell
+        createdHeaderCell: () => {}, // Hook when a header cell is created
+        createdCell: () => {}, // Hook when a cell is created
+        drawHeaderRow: () => {}, // Custom header row drawing
+        drawRow: () => {}, // Custom row drawing
+        drawCell: () => {}, // Custom cell drawing
+        pageBreak: 'auto', // Default page break behavior
+        showHead: 'everyPage', // Show header on every page
+        tableWidth: 'auto', // Default table width
+        tableLineWidth: 0, // Default table line width
+        tableLineColor: 200 // Default table line color
     });
 
     // Tableau Emprunt
@@ -250,7 +351,38 @@ function telechargerPDF() {
             [`${translations.reportInteretsTotaux}`, `${coutTotalInterets.toFixed(0)} €`],
             [`${translations.reportCoutTotalEmprunt}`, `${coutTotalEmprunt.toFixed(0)} €`]
         ],
-        startY: doc.previousAutoTable.finalY + 10
+        startY: doc.previousAutoTable.finalY + 10,
+        margin: { left: 40, top: 10, right: 40, bottom: 10 },
+        theme: 'striped',
+        styles: {
+            fontSize: 12,
+            cellPadding: 4,
+            overflow: 'linebreak',
+            halign: 'left',
+            valign: 'top',
+            fillColor: false,
+            textColor: 20,
+            lineColor: 200,
+            lineWidth: 0.2
+        },
+        headStyles: {},
+        bodyStyles: {},
+        footStyles: {},
+        columnStyles: {},
+        alternateRowStyles: {},
+        didDrawCell: () => {},
+        didDrawPage: () => {},
+        willDrawCell: () => {},
+        createdHeaderCell: () => {},
+        createdCell: () => {},
+        drawHeaderRow: () => {},
+        drawRow: () => {},
+        drawCell: () => {},
+        pageBreak: 'auto',
+        showHead: 'everyPage',
+        tableWidth: 'auto',
+        tableLineWidth: 0,
+        tableLineColor: 200
     });
 
     // Tableau Financement
@@ -262,13 +394,44 @@ function telechargerPDF() {
             [`${translations.reportTaxeHabitationAnnuelle}`, `${taxeHabitation.toFixed(0)} €`],
             [`${translations.reportTaxeFonciereAnnuelle}`, `${taxeFonciere.toFixed(0)} €`]
         ],
-        startY: doc.previousAutoTable.finalY + 10
+        startY: doc.previousAutoTable.finalY + 10,
+        margin: { left: 20, top: 10, right: 20, bottom: 10 },
+        theme: 'striped',
+        styles: {
+            fontSize: 12,
+            cellPadding: 4,
+            overflow: 'linebreak',
+            halign: 'left',
+            valign: 'top',
+            fillColor: false,
+            textColor: 20,
+            lineColor: 200,
+            lineWidth: 10
+        },
+        headStyles: {},
+        bodyStyles: {},
+        footStyles: {},
+        columnStyles: {},
+        alternateRowStyles: {},
+        didDrawCell: () => {},
+        didDrawPage: () => {},
+        willDrawCell: () => {},
+        createdHeaderCell: () => {},
+        createdCell: () => {},
+        drawHeaderRow: () => {},
+        drawRow: () => {},
+        drawCell: () => {},
+        pageBreak: 'auto',
+        showHead: 'everyPage',
+        tableWidth: 'auto',
+        tableLineWidth: 0,
+        tableLineColor: 200
     });
 
     // Ajouter le graphique au PDF
     const chart = document.getElementById('myChart');
     const chartImage = chart.toDataURL('image/png');
-    doc.addImage(chartImage, 'PNG', 15, 200, 180, 90);
+    doc.addImage(chartImage, 'PNG', 15, 200, 180, 90, undefined, 'NONE', 0);
 
     const filename = document.getElementById('pdf-filename').value || translations.pdfFilenamePlaceHolder;
     const pdfFilename = filename.endsWith('.pdf') ? filename : filename + ".pdf";
